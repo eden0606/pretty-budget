@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import styles from "@/styles/Home.module.css";
 import Navbar from "@/components/Navbar";
+import Summary from "@/components/Summary";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,6 +20,7 @@ export default function Home() {
       className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
     >
       <Navbar />
+      <Summary />
     </main>
   );
 }

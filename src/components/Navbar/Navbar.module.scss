@@ -1,13 +1,21 @@
 .root {
-  padding: 24px;
 }
 
 .content {
   display: flex;
   justify-content: space-between;
+  padding: 24px;
 }
 
 .formWrapper {
+  padding: 24px;
+  position: absolute;
+
+  .closeButton {
+    padding: 6px 10px;
+    margin: 10px;
+    float: right;
+  }
 }
 
 .formInactive {

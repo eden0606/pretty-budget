@@ -16,7 +16,7 @@ const Navbar: FunctionComponent = () => {
             setIsFormActive(true);
           }}
         >
-          click me
+          add purchase
         </Button>
       </div>
       <div
@@ -26,13 +26,14 @@ const Navbar: FunctionComponent = () => {
         }`}
       >
         <Button
+          className={styles.closeButton}
           onClick={() => {
             setIsFormActive(false);
           }}
         >
           x
         </Button>
-        <Form className={styles.form} />
+        <Form />
       </div>
     </section>
   );
