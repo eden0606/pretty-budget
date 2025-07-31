@@ -3,7 +3,7 @@ import styles from './page.module.css'
 import { getData } from '@/lib/helpers'
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<any>
 }
 
 export default async function Page({ searchParams }: PageProps) {
