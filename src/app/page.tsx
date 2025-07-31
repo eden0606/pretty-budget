@@ -1,10 +1,9 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import { getData } from '@/lib/helpers'
+import Image from 'next/image';
+import styles from './page.module.scss';
+import { getData } from '@/lib/helpers';
 
 export default async function Home() {
-  const data = await getData()
-  console.log(data)
+  const data = await getData();
 
   return (
     <div className={styles.page}>
@@ -77,5 +76,5 @@ export default async function Home() {
         </a>
       </footer>
     </div>
-  )
+  );
 }
