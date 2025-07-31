@@ -11,27 +11,29 @@ interface PageProps {
 export default async function Page({ searchParams }: PageProps) {
   const { message } = await searchParams;
 
-  let purchase;
-  let card: { name?: string; regex?: RegExp; amountIndex?: number; storeIndex?: number };
+  let purchase = '';
+  let card: { name?: string; regex?: RegExp; amountIndex?: number; storeIndex?: number } = {
+    name: ''
+  };
   let store = '';
   let amount = 0.0;
-  let category;
-  let wantOrNeed;
+  let category = 'other';
+  let wantOrNeed = 'want';
 
   const dateNow = new Date();
   let date = dateNow.toISOString().substring(0, 10);
 
-  if (!message) return;
+  if (message) {
+    card = findMatch(message, CARDS) || {};
 
-  card = findMatch(message, CARDS) || {};
+    const parsedMessage = message.match(card.regex);
 
-  const parsedMessage = message.match(card.regex);
-
-  amount = parsedMessage[card.amountIndex || 0];
-  store = parsedMessage[card.storeIndex || 0].toLowerCase();
-  purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
-  category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
-  wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    amount = parsedMessage[card.amountIndex || 0];
+    store = parsedMessage[card.storeIndex || 0].toLowerCase();
+    purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
+    category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
+    wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+  }
 
   const data = {
     purchase,
