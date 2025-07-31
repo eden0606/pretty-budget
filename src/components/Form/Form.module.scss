@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .inline {
@@ -50,17 +50,26 @@
     background-color: white;
     border: none;
     border-radius: 0.5rem;
+    color: black;
   }
 
   button {
     padding: 0.75rem 1rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     border: none;
     border-radius: 0.5rem;
     background-color: var(--periwinkle);
+    font-size: 1rem;
+    color: black;
+    text-decoration: none;
   }
 }
 
 .success {
   display: none;
+  text-align: center;
+  background-color: var(--light-pink);
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 8px;
 }
