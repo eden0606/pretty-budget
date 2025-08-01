@@ -49,6 +49,15 @@ export const CARDS = {
   }
 };
 
+export const CARD_NAMES = [
+  'wells fargo - active cash - 6919',
+  'wells fargo - bilt - 4376',
+  'chase - sapphire preferred - 3007',
+  'chase - prime - 9337',
+  'citi - custom cash - 2983',
+  'discover - it - 4217'
+];
+
 export const CATEGORY = [
   'groceries',
   'dining out',
@@ -84,7 +93,8 @@ export const FREQUENT_CATEGORIES = {
   'renter"s insurance': 'subscriptions',
   gift: 'gifts',
   coffee: 'dining out',
-  rent: 'rent'
+  rent: 'rent',
+  car: 'car'
 };
 
 export const WANT_OR_NEED = {

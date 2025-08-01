@@ -26,7 +26,13 @@ export default async function Page({ searchParams }: PageProps) {
   if (message) {
     card = findMatch(message, CARDS) || {};
 
-    const parsedMessage = message.match(card.regex);
+    console.log('card', card);
+    console.log(card.regex);
+
+    console.log(message, 'message');
+
+    const parsedMessage = message.match(/transaction of \$(\d+.\d{1,2}) at (.*) on/);
+    console.log('parsedmes', parsedMessage);
 
     amount = parsedMessage[card.amountIndex || 0];
     store = parsedMessage[card.storeIndex || 0].toLowerCase();

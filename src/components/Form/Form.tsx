@@ -1,5 +1,5 @@
 'use client';
-import { CATEGORY } from '@/lib/constants';
+import { CARDS, CARD_NAMES, CATEGORY } from '@/lib/constants';
 import { useState } from 'react';
 import styles from './Form.module.scss';
 
@@ -75,7 +75,7 @@ const Form: React.FC<FormProps> = (props) => {
         <div className={styles.field}>
           <label htmlFor="amount">amount</label>
           <input
-            type="number"
+            type="text"
             id="amount"
             name="amount"
             value={finalizedData.amount}
@@ -85,14 +85,15 @@ const Form: React.FC<FormProps> = (props) => {
         </div>
         <div className={styles.field}>
           <label htmlFor="card">card</label>
-          <input
-            type="text"
-            id="card"
-            name="card"
-            value={finalizedData.card}
-            onChange={handleChange}
-            required
-          />
+          <select name="card" id="card" value={finalizedData.card} onChange={handleChange} required>
+            {CARD_NAMES.map((card) => {
+              return (
+                <option key={card} value={card}>
+                  {card}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className={styles.field}>
           <label htmlFor="purchase">purchase</label>
@@ -136,7 +137,7 @@ const Form: React.FC<FormProps> = (props) => {
             </select>
           </div>
           <div className={styles.field}>
-            <label htmlFor="wantOrNeed">want or need?</label>
+            <label htmlFor="wantOrNeed">w/n?</label>
             <select
               name="wantOrNeed"
               id="wantOrNeed"
@@ -155,7 +156,7 @@ const Form: React.FC<FormProps> = (props) => {
         </button>
       </form>
       <div id="success" className={styles.success}>
-        successfully submitted ᕙ(‾̀◡‾́)ᕗ
+        <p>successfully submitted ᕙ(‾̀◡‾́)ᕗ</p>
         {/* TODO: add edit ability on submit */}
       </div>
     </div>
