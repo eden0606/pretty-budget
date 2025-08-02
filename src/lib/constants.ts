@@ -24,13 +24,13 @@ export const CARDS = {
   },
   sapphire: {
     name: 'chase - sapphire preferred - 3007',
-    regex: /\$(\d+.\d{1,2}) with (.+)/,
+    regex: /\$(\d+.\d{1,2}) with (.+) on/,
     amountIndex: 1,
     storeIndex: 2
   },
   amazon: {
     name: 'chase - prime - 9337',
-    regex: /\$(\d+.\d{1,2}) with (.+)/,
+    regex: /\$(\d+.\d{1,2}) with (.+) on/,
     amountIndex: 1,
     storeIndex: 2
   },
@@ -76,6 +76,7 @@ export const CATEGORY = [
   'other'
 ];
 
+// purchase -> category
 export const FREQUENT_CATEGORIES = {
   groceries: 'groceries',
   gas: 'car',
@@ -94,7 +95,8 @@ export const FREQUENT_CATEGORIES = {
   gift: 'gifts',
   coffee: 'dining out',
   rent: 'rent',
-  car: 'car'
+  car: 'car',
+  hotel: 'activities/travel'
 };
 
 export const WANT_OR_NEED = {

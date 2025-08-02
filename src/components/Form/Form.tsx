@@ -1,5 +1,5 @@
 'use client';
-import { CARDS, CARD_NAMES, CATEGORY } from '@/lib/constants';
+import { CARD_NAMES, CATEGORY } from '@/lib/constants';
 import { useState } from 'react';
 import styles from './Form.module.scss';
 
@@ -17,9 +17,18 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = (props) => {
   const { data } = props;
+  const resetState = {
+    purchase: '',
+    card: 'wells fargo - active cash - 6919',
+    store: '',
+    amount: 0,
+    category: 'other',
+    wantOrNeed: 'want',
+    date: data.date
+  };
 
   const [finalizedData, setFinalizedData] = useState(data);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitText, setSubmitText] = useState('。*・✫━━ submitting ━━✫・*。');
 
   const handleChange = (e: any) => {
     const id = e.currentTarget.id;
@@ -27,13 +36,16 @@ const Form: React.FC<FormProps> = (props) => {
 
     setFinalizedData((prev) => ({
       ...prev,
-      [id]: id === 'amount' ? Number(value) || 0 : value
+      [id]: id === 'amount' ? Number(value) : value
     }));
   };
 
   const handleSubmit = async (e: any) => {
+    setSubmitText('。*・✫━━ submitting ━━✫・*。');
+
     e.preventDefault();
-    setIsSubmitted(true);
+    const successElement = document.getElementById('success') as HTMLElement;
+    successElement.style.display = 'flex';
 
     try {
       const response = await fetch('/api/expenses', {
@@ -41,19 +53,25 @@ const Form: React.FC<FormProps> = (props) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalizedData)
       });
+
       const result = await response.json();
 
-      if (response.status === 201) {
-        const successElement = document.getElementById('success') as HTMLElement;
-        if (!successElement) return;
+      setTimeout(() => {
+        let text = "couldn't submit form, please try again !";
 
-        successElement.style.display = 'block';
-      }
+        if (response.status === 201) {
+          text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
+          setFinalizedData(resetState);
+        }
+
+        setSubmitText(text);
+        setTimeout(() => {
+          successElement.style.display = 'none';
+        }, 750);
+      }, 1000);
     } catch (err) {
       console.error('API call failed:', err);
     }
-
-    setIsSubmitted(false);
   };
 
   return (
@@ -75,9 +93,10 @@ const Form: React.FC<FormProps> = (props) => {
         <div className={styles.field}>
           <label htmlFor="amount">amount</label>
           <input
-            type="text"
+            type="number"
             id="amount"
             name="amount"
+            placeholder={'0'}
             value={finalizedData.amount}
             onChange={handleChange}
             required
@@ -151,12 +170,10 @@ const Form: React.FC<FormProps> = (props) => {
           </div>
         </div>
         {/* TODO: add cute loading state */}
-        <button onClick={handleSubmit}>
-          {isSubmitted ? '。*・✫━━ submitting ━━✫・*。' : '٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ'}
-        </button>
+        <button onClick={handleSubmit}>٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ</button>
       </form>
       <div id="success" className={styles.success}>
-        <p>successfully submitted ᕙ(‾̀◡‾́)ᕗ</p>
+        <p>{submitText}</p>
         {/* TODO: add edit ability on submit */}
       </div>
     </div>

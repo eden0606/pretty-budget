@@ -13,7 +13,7 @@
   }
 
   h1 {
-    color: var(--light-lavender);
+    color: var(--light-pink);
   }
 
   h3 {
@@ -69,11 +69,20 @@
 }
 
 .success {
+  width: 100%;
+  justify-content: center;
+  display: none;
+
   p {
     text-align: center;
     background-color: var(--light-pink);
     padding: 1rem;
-    margin-top: 1.5rem;
     border-radius: 8px;
+    position: absolute;
+    top: 30%;
+    width: 175px;
+    height: 175px;
+    display: flex;
+    align-items: center;
   }
 }

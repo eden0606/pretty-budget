@@ -16,7 +16,7 @@ export default async function Page({ searchParams }: PageProps) {
     name: ''
   };
   let store = '';
-  let amount = 0.0;
+  let amount;
   let category = 'other';
   let wantOrNeed = 'want';
 
@@ -26,19 +26,15 @@ export default async function Page({ searchParams }: PageProps) {
   if (message) {
     card = findMatch(message, CARDS) || {};
 
-    console.log('card', card);
-    console.log(card.regex);
+    const parsedMessage = message.match(card.regex);
 
-    console.log(message, 'message');
-
-    const parsedMessage = message.match(/transaction of \$(\d+.\d{1,2}) at (.*) on/);
-    console.log('parsedmes', parsedMessage);
-
-    amount = parsedMessage[card.amountIndex || 0];
-    store = parsedMessage[card.storeIndex || 0].toLowerCase();
-    purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
-    category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
-    wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    if (parsedMessage) {
+      amount = parsedMessage[card.amountIndex || 0];
+      store = parsedMessage[card.storeIndex || 0].toLowerCase();
+      purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
+      category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
+      wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    }
   }
 
   const data = {
