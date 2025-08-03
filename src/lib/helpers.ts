@@ -14,3 +14,11 @@ export const findMatch = (str: string, collection: { [key: string]: string | {} 
 
   return matchedKey ? collection[matchedKey] : null;
 };
+
+export const isAuthenticated = (key: string) => {
+  if (key === process.env.AUTH_KEY) {
+    return true;
+  }
+
+  return false;
+};

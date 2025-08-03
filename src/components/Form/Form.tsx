@@ -1,5 +1,6 @@
 'use client';
-import { CARD_NAMES, CATEGORY } from '@/lib/constants';
+import { CARD_NAMES, CATEGORY, FREQUENT_CATEGORIES, WANT_OR_NEED } from '@/lib/constants';
+import { findMatch } from '@/lib/helpers';
 import { useState } from 'react';
 import styles from './Form.module.scss';
 
@@ -13,10 +14,11 @@ interface FormProps {
     wantOrNeed: string;
     date: string;
   };
+  isAuthenticated: boolean;
 }
 
 const Form: React.FC<FormProps> = (props) => {
-  const { data } = props;
+  const { data, isAuthenticated } = props;
   const resetState = {
     purchase: '',
     card: 'wells fargo - active cash - 6919',
@@ -29,53 +31,97 @@ const Form: React.FC<FormProps> = (props) => {
 
   const [finalizedData, setFinalizedData] = useState(data);
   const [submitText, setSubmitText] = useState('。*・✫━━ submitting ━━✫・*。');
+  console.log('fin', finalizedData);
 
   const handleChange = (e: any) => {
     const id = e.currentTarget.id;
-    const value = e.currentTarget.value;
+    let value = e.currentTarget.value;
 
-    setFinalizedData((prev) => ({
-      ...prev,
-      [id]: id === 'amount' ? Number(value) : value
-    }));
+    switch (id) {
+      case 'amount':
+        value = Number(value);
+        break;
+      case 'purchase':
+    }
+
+    if (id === 'amount') {
+      setFinalizedData((prev) => ({
+        ...prev,
+        [id]: Number(value)
+      }));
+    } else if (id === 'purchase') {
+      const category = (findMatch(value, FREQUENT_CATEGORIES) || data.category).toString();
+      const wantOrNeed = (findMatch(category, WANT_OR_NEED) || data.wantOrNeed).toString();
+
+      setFinalizedData((prev) => ({
+        ...prev,
+        [id]: value,
+        ['category']: category,
+        ['wantOrNeed']: wantOrNeed
+      }));
+    } else if (id === 'category') {
+      const wantOrNeed = (findMatch(value, WANT_OR_NEED) || data.wantOrNeed).toString();
+
+      setFinalizedData((prev) => ({
+        ...prev,
+        [id]: value,
+        ['wantOrNeed']: wantOrNeed
+      }));
+    } else {
+      setFinalizedData((prev) => ({
+        ...prev,
+        [id]: value
+      }));
+    }
   };
 
   const handleSubmit = async (e: any) => {
+    console.log('finalzed', finalizedData);
     setSubmitText('。*・✫━━ submitting ━━✫・*。');
 
     e.preventDefault();
     const successElement = document.getElementById('success') as HTMLElement;
     successElement.style.display = 'flex';
 
-    try {
-      const response = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(finalizedData)
-      });
+    if (isAuthenticated) {
+      try {
+        const response = await fetch('/api/expenses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(finalizedData)
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
+        setTimeout(() => {
+          let text = "couldn't submit form, please try again !";
+
+          if (response.status === 201) {
+            text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
+            setFinalizedData(resetState);
+          }
+
+          setSubmitText(text);
+          setTimeout(() => {
+            successElement.style.display = 'none';
+          }, 750);
+        }, 1000);
+      } catch (err) {
+        console.error('API call failed:', err);
+      }
+    } else {
       setTimeout(() => {
-        let text = "couldn't submit form, please try again !";
-
-        if (response.status === 201) {
-          text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
-          setFinalizedData(resetState);
-        }
-
-        setSubmitText(text);
+        setFinalizedData(resetState);
+        setSubmitText('successfully submitted ᕙ(‾̀◡‾́)ᕗ');
         setTimeout(() => {
           successElement.style.display = 'none';
         }, 750);
       }, 1000);
-    } catch (err) {
-      console.error('API call failed:', err);
     }
   };
 
   return (
-    <div className={styles.form}>
+    <div className={`${styles.form} ${isAuthenticated ? styles.auth : styles.nonauth}`}>
       <h1>new expense entry</h1>
       <h3>✿ ͡◕ ᴗ◕)つ━━✫・*。</h3>
       {/* TODO: add validation, using zod schema ??? */}

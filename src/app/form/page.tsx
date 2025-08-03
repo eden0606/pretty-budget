@@ -1,6 +1,5 @@
-import Image from 'next/image';
 import styles from './page.module.scss';
-import { findMatch, getData } from '@/lib/helpers';
+import { findMatch, isAuthenticated } from '@/lib/helpers';
 import { CARDS, FREQUENT_CATEGORIES, FREQUENT_PURCHASES, WANT_OR_NEED } from '@/lib/constants';
 import Form from '@/components/Form';
 
@@ -9,11 +8,11 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const { message } = await searchParams;
+  const { message, key } = await searchParams;
 
   let purchase = '';
-  let card: { name?: string; regex?: RegExp; amountIndex?: number; storeIndex?: number } = {
-    name: ''
+  let card: { name?: string; regex?: RegExp[]; amountIndex?: number; storeIndex?: number } = {
+    name: 'wells fargo - active cash - 6919'
   };
   let store = '';
   let amount;
@@ -26,7 +25,9 @@ export default async function Page({ searchParams }: PageProps) {
   if (message) {
     card = findMatch(message, CARDS) || {};
 
-    const parsedMessage = message.match(card.regex);
+    const parsedMessage = card?.regex
+      ?.map((exp) => message.match(exp))
+      .filter((message) => !!message)[0];
 
     if (parsedMessage) {
       amount = parsedMessage[card.amountIndex || 0];
@@ -39,7 +40,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   const data = {
     purchase,
-    card: card.name || '',
+    card: card.name || 'wells fargo - active cash - 6919',
     store,
     amount,
     category,
@@ -49,7 +50,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className={styles.form}>
-      <Form data={data} />
+      <Form data={data} isAuthenticated={isAuthenticated(key)} />
     </div>
   );
 }

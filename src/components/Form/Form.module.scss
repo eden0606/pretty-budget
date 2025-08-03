@@ -1,9 +1,33 @@
+.auth {
+  --bg-color: var(--dark-periwinkle);
+  --h1-color: var(--light-pink);
+  --h3-color: white;
+  --label-color: white;
+  --input-select-color: white;
+  --input-select-text-color: black;
+  --button-color: var(--light-pink);
+  --button-text-color: black;
+  --p-color: var(--light-pink);
+}
+
+.nonauth {
+  --bg-color: var(--dark-pink);
+  --h1-color: var(--light-lavender);
+  --h3-color: white;
+  --label-color: white;
+  --input-select-color: white;
+  --input-select-text-color: black;
+  --button-color: var(--light-lavender);
+  --button-text-color: rgb(0, 0, 0);
+  --p-color: var(--periwinkle);
+}
+
 .form {
   padding: 1.5rem;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
-  background-color: var(--dark-periwinkle);
+  background-color: var(--bg-color);
   border-radius: 2rem;
   position: relative;
 
@@ -13,11 +37,11 @@
   }
 
   h1 {
-    color: var(--light-pink);
+    color: var(--h1-color);
   }
 
   h3 {
-    color: white;
+    color: var(--h3-color);
   }
 
   form {
@@ -41,7 +65,7 @@
   }
 
   label {
-    color: white;
+    color: var(--label-color);
     font-weight: 700;
     font-size: 1.5rem;
   }
@@ -49,10 +73,10 @@
   input,
   select {
     padding: 0.75rem 1rem;
-    background-color: white;
+    background-color: var(--input-select-color);
     border: none;
     border-radius: 0.5rem;
-    color: black;
+    color: var(--input-select-text-color);
     font-size: 1.125rem;
   }
 
@@ -61,9 +85,9 @@
     margin-top: 0.5rem;
     border: none;
     border-radius: 0.5rem;
-    background-color: var(--light-pink);
+    background-color: var(--button-color);
     font-size: 1rem;
-    color: black;
+    color: var(--button-text-color);
     text-decoration: none;
   }
 }
@@ -75,7 +99,7 @@
 
   p {
     text-align: center;
-    background-color: var(--light-pink);
+    background-color: var(--p-color);
     padding: 1rem;
     border-radius: 8px;
     position: absolute;
