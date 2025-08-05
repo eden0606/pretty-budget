@@ -15,7 +15,7 @@ export default async function Page({ searchParams }: PageProps) {
     name: 'wells fargo - active cash - 6919'
   };
   let store = '';
-  let amount;
+  let amount = 0.0;
   let category = 'other';
   let wantOrNeed = 'want';
 
@@ -30,7 +30,7 @@ export default async function Page({ searchParams }: PageProps) {
       .filter((message) => !!message)[0];
 
     if (parsedMessage) {
-      amount = parsedMessage[card.amountIndex || 0];
+      amount = parseFloat(parsedMessage[card.amountIndex || 0]);
       store = parsedMessage[card.storeIndex || 0].toLowerCase();
       purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
       category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';

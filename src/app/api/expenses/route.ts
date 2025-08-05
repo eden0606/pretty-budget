@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     } else {
       result = await sql`
         INSERT INTO expenses (purchase, store, category, want_or_need, amount, card)
-        VALUES (${purchase}, ${store}, ${category}, ${wantOrNeed}, ${amount} ${card})
+        VALUES (${purchase}, ${store}, ${category}, ${wantOrNeed}, ${amount}, ${card})
         RETURNING *
       `;
     }
@@ -42,5 +42,28 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching expenses:', error);
     return NextResponse.json({ error: 'Failed to fetch expenses' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const sql = neon(process.env.DATABASE_URL || '');
+    const { id, purchase, store, category, wantOrNeed, amount, card } = await request.json();
+
+    if (!amount || !purchase || !store || !wantOrNeed || !category || !card || !id) {
+      return NextResponse.json({ error: 'Missing required information.' }, { status: 400 });
+    }
+
+    const result = await sql`
+    UPDATE expenses
+    SET purchase = ${purchase}, store = ${store}, category = ${category}, want_or_need = ${wantOrNeed}, amount = ${amount}, card = ${card}
+    WHERE id = ${id}
+    RETURNING *
+  `;
+
+    return NextResponse.json(result[0], { status: 201 });
+  } catch (error) {
+    console.error('Error inserting expense:', error);
+    return NextResponse.json({ error: `Failed to insert expense, ${error}` }, { status: 500 });
   }
 }

@@ -1,7 +1,7 @@
 export const CARDS = {
   6919: {
     name: 'wells fargo - active cash - 6919',
-    regex: /used at (.*) for \$(\d+.\d{1,2})/,
+    regex: [/used at (.*) for \$(\d+.\d{1,2})/],
     amountIndex: 2,
     storeIndex: 1
   },

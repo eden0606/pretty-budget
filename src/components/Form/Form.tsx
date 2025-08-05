@@ -2,6 +2,8 @@
 import { CARD_NAMES, CATEGORY, FREQUENT_CATEGORIES, WANT_OR_NEED } from '@/lib/constants';
 import { findMatch } from '@/lib/helpers';
 import { useState } from 'react';
+import Edit from '../svgs/Edit';
+import Copy from '../svgs/Copy';
 import styles from './Form.module.scss';
 
 interface FormProps {
@@ -13,6 +15,7 @@ interface FormProps {
     category: string;
     wantOrNeed: string;
     date: string;
+    id?: number;
   };
   isAuthenticated: boolean;
 }
@@ -26,12 +29,16 @@ const Form: React.FC<FormProps> = (props) => {
     amount: 0,
     category: 'other',
     wantOrNeed: 'want',
-    date: data.date
+    date: data.date,
+    id: undefined
   };
 
   const [finalizedData, setFinalizedData] = useState(data);
-  const [submitText, setSubmitText] = useState('。*・✫━━ submitting ━━✫・*。');
-  console.log('fin', finalizedData);
+  const [submitText, setSubmitText] = useState('successfully submitted ᕙ(‾̀◡‾́)ᕗ');
+
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [hasErrors, setHasErrors] = useState(true);
+  const isSubmitted = submitText === 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
 
   const handleChange = (e: any) => {
     const id = e.currentTarget.id;
@@ -76,8 +83,9 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleSubmit = async (e: any) => {
-    console.log('finalzed', finalizedData);
-    setSubmitText('。*・✫━━ submitting ━━✫・*。');
+    setSubmitText('。*・✫━━<br/>submitting<br/>━━✫・*。');
+    // may need to change this logic later when adding in validation
+    setHasErrors(false);
 
     e.preventDefault();
     const successElement = document.getElementById('success') as HTMLElement;
@@ -85,39 +93,54 @@ const Form: React.FC<FormProps> = (props) => {
 
     if (isAuthenticated) {
       try {
-        const response = await fetch('/api/expenses', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(finalizedData)
-        });
+        let response;
+        if (!shouldUpdate) {
+          response = await fetch('/api/expenses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(finalizedData)
+          });
+        } else {
+          response = await fetch('/api/expenses', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(finalizedData)
+          });
+        }
 
         const result = await response.json();
 
-        setTimeout(() => {
-          let text = "couldn't submit form, please try again !";
+        let text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
 
-          if (response.status === 201) {
-            text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
-            setFinalizedData(resetState);
-          }
+        if (response.status !== 201) {
+          text = "couldn't submit form, please try again !";
+          setHasErrors(true);
+        } else {
+          setFinalizedData((prev) => ({
+            ...prev,
+            ['id']: result.id
+          }));
+        }
 
-          setSubmitText(text);
-          setTimeout(() => {
-            successElement.style.display = 'none';
-          }, 750);
-        }, 1000);
+        setSubmitText(text);
       } catch (err) {
         console.error('API call failed:', err);
       }
     } else {
-      setTimeout(() => {
-        setFinalizedData(resetState);
-        setSubmitText('successfully submitted ᕙ(‾̀◡‾́)ᕗ');
-        setTimeout(() => {
-          successElement.style.display = 'none';
-        }, 750);
-      }, 1000);
+      setSubmitText('successfully submitted ᕙ(‾̀◡‾́)ᕗ');
     }
+  };
+
+  const handleState = async (e: any, state: 'edit' | 'copy' | 'done') => {
+    const successElement = document.getElementById('success') as HTMLElement;
+
+    if (state === 'done') {
+      setFinalizedData(resetState);
+    } else if (state === 'edit') {
+      setShouldUpdate(true);
+    }
+
+    successElement.style.display = 'none';
   };
 
   return (
@@ -219,8 +242,36 @@ const Form: React.FC<FormProps> = (props) => {
         <button onClick={handleSubmit}>٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ</button>
       </form>
       <div id="success" className={styles.success}>
-        <p>{submitText}</p>
-        {/* TODO: add edit ability on submit */}
+        <div className={styles.content}>
+          <div dangerouslySetInnerHTML={{ __html: submitText }} />
+          {/* TODO: add edit ability on submit */}
+          {isSubmitted && (
+            <div className={styles.modify}>
+              <button onClick={(e) => handleState(e, 'edit')}>
+                <Edit />
+              </button>
+              <button onClick={(e) => handleState(e, 'copy')}>
+                <Copy />
+              </button>
+            </div>
+          )}
+
+          {(isSubmitted || hasErrors) && (
+            <div className={styles.done}>
+              <button
+                onClick={(e) => {
+                  if (hasErrors) {
+                    handleState(e, 'copy');
+                  } else {
+                    handleState(e, 'done');
+                  }
+                }}
+              >
+                {hasErrors ? 'try again' : 'done'}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

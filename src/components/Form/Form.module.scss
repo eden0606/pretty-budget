@@ -97,16 +97,41 @@
   justify-content: center;
   display: none;
 
-  p {
+  .content {
     text-align: center;
     background-color: var(--p-color);
     padding: 1rem;
     border-radius: 8px;
     position: absolute;
     top: 30%;
-    width: 175px;
-    height: 175px;
+    width: 225px;
+    min-height: 184px;
     display: flex;
     align-items: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  button {
+    margin: 0;
+    background-color: white;
+    color: var(--dark-periwinkle);
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    min-width: 75px;
+    width: 100%;
+
+    svg {
+      height: 24px;
+      width: 24px;
+      fill: var(--dark-periwinkle);
+    }
+  }
+
+  .modify {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
   }
 }
