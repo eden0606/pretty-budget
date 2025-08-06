@@ -1,5 +1,5 @@
 import styles from './page.module.scss';
-import { findMatch, isAuthenticated } from '@/lib/helpers';
+import { findMatch, formatDate, isAuthenticated, parseMessage } from '@/lib/helpers';
 import { CARDS, FREQUENT_CATEGORIES, FREQUENT_PURCHASES, WANT_OR_NEED } from '@/lib/constants';
 import Form from '@/components/Form';
 
@@ -19,15 +19,12 @@ export default async function Page({ searchParams }: PageProps) {
   let category = 'other';
   let wantOrNeed = 'want';
 
-  const dateNow = new Date();
-  let date = dateNow.toISOString().substring(0, 10);
+  const date = formatDate(new Date());
 
   if (message) {
     card = findMatch(message, CARDS) || {};
 
-    const parsedMessage = card?.regex
-      ?.map((exp) => message.match(exp))
-      .filter((message) => !!message)[0];
+    const parsedMessage = parseMessage(card.regex, message);
 
     if (parsedMessage) {
       amount = parseFloat(parsedMessage[card.amountIndex || 0]);

@@ -1,7 +1,8 @@
 import { neon } from '@neondatabase/serverless';
+import { DATABASE_URL } from './constants';
 
 export async function getData() {
-  const sql = neon(process.env.DATABASE_URL || '');
+  const sql = neon(DATABASE_URL || '');
   const data = await sql`SELECT * FROM expenses`;
 
   return data;
@@ -21,4 +22,18 @@ export const isAuthenticated = (key: string) => {
   }
 
   return false;
+};
+
+export const parseMessage = (regexArr: RegExp[] | undefined, message: string) => {
+  if (!regexArr || !message) return null;
+
+  return regexArr?.map((exp) => message.match(exp)).filter((message) => !!message)[0];
+};
+
+export const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 };

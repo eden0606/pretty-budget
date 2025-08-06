@@ -1,3 +1,6 @@
+export const DATABASE_URL =
+  process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL : process.env.DEV_DATABASE_URL;
+
 export const CARDS = {
   6919: {
     name: 'wells fargo - active cash - 6919',
@@ -26,7 +29,7 @@ export const CARDS = {
   citi: {
     //   TODO: change this once we know what citi's message format is
     name: 'citi - custom cash - 2983',
-    regex: [/\$(\d+.\d{1,2}) with (.+)/],
+    regex: [/A \$(\d+.\d{1,2}) transaction was made at (.+) on/],
     amountIndex: 1,
     storeIndex: 2
   },

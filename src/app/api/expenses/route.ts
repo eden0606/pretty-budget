@@ -1,9 +1,10 @@
+import { DATABASE_URL } from '@/lib/constants';
 import { neon } from '@neondatabase/serverless';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const sql = neon(process.env.DATABASE_URL || '');
+    const sql = neon(DATABASE_URL || '');
     const { date, purchase, store, category, wantOrNeed, amount, card } = await request.json();
 
     if (!amount || !purchase || !store || !wantOrNeed || !category || !card) {
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const sql = neon(process.env.DATABASE_URL || '');
+    const sql = neon(DATABASE_URL || '');
     const data = await sql`SELECT * FROM expenses ORDER BY date DESC`;
 
     return NextResponse.json(data);
@@ -47,7 +48,7 @@ export async function GET() {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const sql = neon(process.env.DATABASE_URL || '');
+    const sql = neon(DATABASE_URL || '');
     const { id, purchase, store, category, wantOrNeed, amount, card } = await request.json();
 
     if (!amount || !purchase || !store || !wantOrNeed || !category || !card || !id) {
