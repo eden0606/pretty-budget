@@ -4,40 +4,27 @@ export const DATABASE_URL =
 export const CARDS = {
   6919: {
     name: 'wells fargo - active cash - 6919',
-    regex: [/used at (.*) for \$(\d+.\d{1,2})/],
-    amountIndex: 2,
-    storeIndex: 1
+    regex: [/used at (.*) for \$(\d+.\d{1,2})/, /\$(\d+.\d{1,2}) purchase at (.*) with/]
   },
   4376: {
     name: 'wells fargo - bilt - 4376',
-    regex: [/used at (.*) for \$(\d+.\d{1,2})/],
-    amountIndex: 2,
-    storeIndex: 1
+    regex: [/used at (.*) for \$(\d+.\d{1,2})/, /\$(\d+.\d{1,2}) purchase at (.*) with/]
   },
   sapphire: {
     name: 'chase - sapphire preferred - 3007',
-    regex: [/\$(\d+.\d{1,2}) with (.+) on/, /a \$(\d+.\d{1,2}) transaction with (.*) on/],
-    amountIndex: 1,
-    storeIndex: 2
+    regex: [/\$(\d+.\d{1,2}) with (.+) on/, /\$(\d+.\d{1,2}) transaction with (.*) on/]
   },
   amazon: {
     name: 'chase - prime - 9337',
-    regex: [/\$(\d+.\d{1,2}) with (.+) on/, /a \$(\d+.\d{1,2}) transaction with (.*) on/],
-    amountIndex: 1,
-    storeIndex: 2
+    regex: [/\$(\d+.\d{1,2}) with (.+) on/, /\$(\d+.\d{1,2}) transaction with (.*) on/]
   },
   citi: {
-    //   TODO: change this once we know what citi's message format is
     name: 'citi - custom cash - 2983',
-    regex: [/A \$(\d+.\d{1,2}) transaction was made at (.+) on/],
-    amountIndex: 1,
-    storeIndex: 2
+    regex: [/\$(\d+.\d{1,2}) transaction was made at (.+) on/]
   },
   discover: {
     name: 'discover - it - 4217',
-    regex: [/transaction of \$(\d+.\d{1,2}) at (.*) on/],
-    amountIndex: 1,
-    storeIndex: 2
+    regex: [/\$(\d+.\d{1,2}) at (.*) on/]
   }
 };
 
@@ -78,7 +65,8 @@ export const FREQUENT_PURCHASES = {
   rent: 'rent',
   'state farm': "renter's insurance",
   spotify: 'spotify',
-  netflix: 'netflix'
+  netflix: 'netflix',
+  energy: 'energy bill'
 };
 
 // purchase -> category

@@ -54,7 +54,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (id === 'amount') {
       setFinalizedData((prev) => ({
         ...prev,
-        [id]: Number(value)
+        [id]: Number(value) || ''
       }));
     } else if (id === 'purchase') {
       const category = (findMatch(value, FREQUENT_CATEGORIES) || data.category).toString();
@@ -165,7 +165,6 @@ const Form: React.FC<FormProps> = (props) => {
             type="number"
             id="amount"
             name="amount"
-            placeholder={'0'}
             value={finalizedData.amount}
             onChange={handleChange}
             required

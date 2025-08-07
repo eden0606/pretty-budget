@@ -14,25 +14,25 @@ export default async function Page({ searchParams }: PageProps) {
   let card: { name?: string; regex?: RegExp[]; amountIndex?: number; storeIndex?: number } = {
     name: 'wells fargo - active cash - 6919'
   };
-  let store = '';
-  let amount = 0.0;
   let category = 'other';
   let wantOrNeed = 'want';
+  let amount = 0.0;
+  let store = '';
 
   const date = formatDate(new Date());
+
+  console.log(date, 'date');
 
   if (message) {
     card = findMatch(message, CARDS) || {};
 
-    const parsedMessage = parseMessage(card.regex, message);
+    const parsed = parseMessage(card.regex, message);
 
-    if (parsedMessage) {
-      amount = parseFloat(parsedMessage[card.amountIndex || 0]);
-      store = parsedMessage[card.storeIndex || 0].toLowerCase();
-      purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
-      category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
-      wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    }
+    amount = parseFloat(parsed.amount);
+    store = parsed.store;
+    purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
+    category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
+    wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
   }
 
   const data = {

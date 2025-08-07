@@ -25,15 +25,40 @@ export const isAuthenticated = (key: string) => {
 };
 
 export const parseMessage = (regexArr: RegExp[] | undefined, message: string) => {
-  if (!regexArr || !message) return null;
+  let amount = '';
+  let store = '';
 
-  return regexArr?.map((exp) => message.match(exp)).filter((message) => !!message)[0];
+  if (!regexArr || !message) return { amount, store };
+
+  const match = regexArr?.map((exp) => message.match(exp)).filter((message) => !!message)[0];
+
+  if (!match) return { amount, store };
+
+  const group = match.slice(1);
+
+  for (const item of group) {
+    if (/^\d+\.?\d*$/.test(item)) {
+      amount = item.toLowerCase();
+    } else {
+      store = item.toLowerCase();
+    }
+  }
+
+  return { amount, store };
 };
 
 export const formatDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  let detectedTimeZone: string | undefined;
+  try {
+    detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) {
+    console.warn('Timezone detection failed, falling back to UTC');
+  }
 
-  return `${year}-${month}-${day}`;
+  return date.toLocaleDateString('en-CA', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: detectedTimeZone || 'UTC'
+  });
 };
