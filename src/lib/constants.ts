@@ -66,7 +66,8 @@ export const FREQUENT_PURCHASES = {
   'state farm': "renter's insurance",
   spotify: 'spotify',
   netflix: 'netflix',
-  energy: 'energy bill'
+  energy: 'energy bill',
+  parking: 'parking'
 };
 
 // purchase -> category
