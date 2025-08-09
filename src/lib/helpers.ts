@@ -1,9 +1,30 @@
 import { neon } from '@neondatabase/serverless';
 import { DATABASE_URL } from './constants';
 
-export async function getData() {
+export async function getData(order: 'ASC' | 'DESC') {
   const sql = neon(DATABASE_URL || '');
-  const data = await sql`SELECT * FROM expenses`;
+
+  let data;
+  if (order === 'ASC') {
+    data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
+  } else if (order === 'DESC') {
+    data = await sql`SELECT * FROM expenses ORDER BY id DESC`;
+  } else {
+    data = await sql`SELECT * FROM expenses ORDER BY id`;
+  }
+
+  return data;
+}
+
+export async function getColumnNames() {
+  const sql = neon(DATABASE_URL || '');
+
+  const data = await sql`
+  SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'expenses'
+  ORDER BY ORDINAL_POSITION
+`;
 
   return data;
 }
@@ -61,4 +82,11 @@ export const formatDate = (date: Date) => {
     day: '2-digit',
     timeZone: detectedTimeZone || 'UTC'
   });
+};
+
+export const truncateString = (str: string, maxLen: number) => {
+  if (str.length > maxLen) {
+    return str.slice(0, maxLen - 3) + '...';
+  }
+  return str;
 };

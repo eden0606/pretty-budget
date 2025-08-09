@@ -15,13 +15,11 @@ export default async function Page({ searchParams }: PageProps) {
     name: 'wells fargo - active cash - 6919'
   };
   let category = 'other';
-  let wantOrNeed = 'want';
+  let want_or_need = 'want';
   let amount = 0.0;
   let store = '';
 
-  const date = formatDate(new Date());
-
-  console.log(date, 'date');
+  const date = new Date();
 
   if (message) {
     card = findMatch(message, CARDS) || {};
@@ -32,7 +30,7 @@ export default async function Page({ searchParams }: PageProps) {
     store = parsed.store;
     purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
     category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
-    wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
   }
 
   const data = {
@@ -41,13 +39,13 @@ export default async function Page({ searchParams }: PageProps) {
     store,
     amount,
     category,
-    wantOrNeed,
+    want_or_need,
     date
   };
 
   return (
-    <div className={styles.form}>
+    <main className={styles.form}>
       <Form data={data} isAuthenticated={isAuthenticated(key)} />
-    </div>
+    </main>
   );
 }

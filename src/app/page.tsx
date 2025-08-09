@@ -3,8 +3,6 @@ import styles from './page.module.scss';
 import { getData } from '@/lib/helpers';
 
 export default async function Home() {
-  const data = await getData();
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>

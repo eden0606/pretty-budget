@@ -1,22 +1,17 @@
 'use client';
+
+import type { FormData } from '@/types';
 import { CARD_NAMES, CATEGORY, FREQUENT_CATEGORIES, WANT_OR_NEED } from '@/lib/constants';
-import { findMatch } from '@/lib/helpers';
+import { findMatch, formatDate } from '@/lib/helpers';
 import { useState } from 'react';
 import Edit from '../svgs/Edit';
 import Copy from '../svgs/Copy';
 import styles from './Form.module.scss';
+import CirclePlus from '../svgs/CirclePlus';
+import CircleMinus from '../svgs/CircleMinus';
 
 interface FormProps {
-  data: {
-    purchase: string;
-    card: string;
-    store: string;
-    amount: number;
-    category: string;
-    wantOrNeed: string;
-    date: string;
-    id?: number;
-  };
+  data: FormData;
   isAuthenticated: boolean;
 }
 
@@ -28,28 +23,23 @@ const Form: React.FC<FormProps> = (props) => {
     store: '',
     amount: 0,
     category: 'other',
-    wantOrNeed: 'want',
+    want_or_need: 'want',
     date: data.date,
-    id: undefined
+    id: undefined,
+    notes: undefined
   };
 
   const [finalizedData, setFinalizedData] = useState(data);
   const [submitText, setSubmitText] = useState('successfully submitted ᕙ(‾̀◡‾́)ᕗ');
-
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [hasErrors, setHasErrors] = useState(true);
-  const isSubmitted = submitText === 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
+  const [showNotes, setShowNotes] = useState(false);
+
+  const isSubmitted = submitText.includes('successfully');
 
   const handleChange = (e: any) => {
     const id = e.currentTarget.id;
     let value = e.currentTarget.value;
-
-    switch (id) {
-      case 'amount':
-        value = Number(value);
-        break;
-      case 'purchase':
-    }
 
     if (id === 'amount') {
       setFinalizedData((prev) => ({
@@ -58,21 +48,21 @@ const Form: React.FC<FormProps> = (props) => {
       }));
     } else if (id === 'purchase') {
       const category = (findMatch(value, FREQUENT_CATEGORIES) || data.category).toString();
-      const wantOrNeed = (findMatch(category, WANT_OR_NEED) || data.wantOrNeed).toString();
+      const want_or_need = (findMatch(category, WANT_OR_NEED) || data.want_or_need).toString();
 
       setFinalizedData((prev) => ({
         ...prev,
         [id]: value,
         ['category']: category,
-        ['wantOrNeed']: wantOrNeed
+        ['want_or_need']: want_or_need
       }));
     } else if (id === 'category') {
-      const wantOrNeed = (findMatch(value, WANT_OR_NEED) || data.wantOrNeed).toString();
+      const want_or_need = (findMatch(value, WANT_OR_NEED) || data.want_or_need).toString();
 
       setFinalizedData((prev) => ({
         ...prev,
         [id]: value,
-        ['wantOrNeed']: wantOrNeed
+        ['want_or_need']: want_or_need
       }));
     } else {
       setFinalizedData((prev) => ({
@@ -91,6 +81,8 @@ const Form: React.FC<FormProps> = (props) => {
     const successElement = document.getElementById('success') as HTMLElement;
     successElement.style.display = 'flex';
 
+    let text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
+
     if (isAuthenticated) {
       try {
         let response;
@@ -101,6 +93,7 @@ const Form: React.FC<FormProps> = (props) => {
             body: JSON.stringify(finalizedData)
           });
         } else {
+          text = 'successfully updated ᕙ(‾̀◡‾́)ᕗ';
           response = await fetch('/api/expenses', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -109,8 +102,6 @@ const Form: React.FC<FormProps> = (props) => {
         }
 
         const result = await response.json();
-
-        let text = 'successfully submitted ᕙ(‾̀◡‾́)ᕗ';
 
         if (response.status !== 201) {
           text = "couldn't submit form, please try again !";
@@ -155,7 +146,7 @@ const Form: React.FC<FormProps> = (props) => {
             type="text"
             id="date"
             name="date"
-            value={finalizedData.date}
+            value={formatDate(finalizedData.date)}
             onChange={handleChange}
           />
         </div>
@@ -223,12 +214,13 @@ const Form: React.FC<FormProps> = (props) => {
               })}
             </select>
           </div>
+          {/* TODO: change this to snake case? */}
           <div className={styles.field}>
-            <label htmlFor="wantOrNeed">w/n?</label>
+            <label htmlFor="want_or_need">w/n?</label>
             <select
-              name="wantOrNeed"
-              id="wantOrNeed"
-              value={finalizedData.wantOrNeed}
+              name="want_or_need"
+              id="want_or_need"
+              value={finalizedData.want_or_need}
               onChange={handleChange}
               required
             >
@@ -237,6 +229,27 @@ const Form: React.FC<FormProps> = (props) => {
             </select>
           </div>
         </div>
+        <button
+          className={styles.plusMinusButton}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowNotes(!showNotes);
+          }}
+        >
+          {showNotes ? <CircleMinus /> : <CirclePlus />} <p>add notes</p>
+        </button>
+        {showNotes && (
+          <div className={styles.field}>
+            <label htmlFor="notes">notes</label>
+            <textarea
+              name="notes"
+              id="notes"
+              value={finalizedData.notes}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+        )}
+
         {/* TODO: add cute loading state */}
         <button onClick={handleSubmit}>٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ</button>
       </form>

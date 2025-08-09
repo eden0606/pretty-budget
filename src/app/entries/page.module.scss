@@ -1,0 +1,47 @@
+.page {
+  padding: 1.5rem;
+}
+
+.header {
+  position: relative;
+  h1 {
+    text-align: center;
+    color: var(--dark-periwinkle);
+  }
+
+  .refresh {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--light-lavender);
+    border-radius: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: var(--dark-periwinkle);
+    }
+  }
+}
+
+.entries {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.grid {
+  //   display: grid;
+  //   grid-template-columns: repeat(9, 1fr);
+}
+
+// .row {
+//   ul {
+//     display: flex;
+//     gap: 1rem;
+//     list-style: none;
+//   }
+// }

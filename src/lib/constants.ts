@@ -62,12 +62,15 @@ export const FREQUENT_PURCHASES = {
   chickfila: 'chick-fil-a',
   aldi: 'groceries',
   walmart: 'groceries',
-  rent: 'rent',
   'state farm': "renter's insurance",
+  rent: 'rent',
   spotify: 'spotify',
   netflix: 'netflix',
   energy: 'energy bill',
-  parking: 'parking'
+  parking: 'parking',
+  home: 'home items',
+  tjmaxx: 'home items',
+  marshalls: 'home items'
 };
 
 // purchase -> category
@@ -85,7 +88,7 @@ export const FREQUENT_CATEGORIES = {
   netflix: 'subscriptions',
   apple: 'subscriptions',
   spotify: 'subscriptions',
-  'renter"s insurance': 'subscriptions',
+  "renter's insurance": 'subscriptions',
   gift: 'gifts',
   coffee: 'dining out',
   rent: 'rent',
@@ -94,7 +97,8 @@ export const FREQUENT_CATEGORIES = {
   litter: 'pets',
   vet: 'pets',
   flight: 'activities/travel',
-  parking: 'activities/travel'
+  parking: 'activities/travel',
+  home: 'home items'
 };
 
 // category -> want/need

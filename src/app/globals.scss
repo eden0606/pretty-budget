@@ -18,7 +18,6 @@ body {
   font-family: var(--karla);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--light-lavender);
 }
 
 * {
@@ -34,6 +33,12 @@ a {
 
 button,
 input,
-select {
+select,
+textarea {
   font-family: var(--karla);
+}
+
+button {
+  background-color: transparent;
+  border: none;
 }

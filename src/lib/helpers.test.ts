@@ -19,8 +19,8 @@ describe('wf - active cash - 6919 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('activities/travel');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('want');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('want');
   });
 });
 
@@ -42,8 +42,8 @@ describe('wf - bilt - 4376 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('rent');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('need');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('need');
   });
 });
 
@@ -65,8 +65,8 @@ describe('chase - sapphire - 3007 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('dining out');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('want');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('want');
   });
 });
 
@@ -88,8 +88,8 @@ describe('chase - sapphire - opm - 3007 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('other');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('want');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('want');
   });
 });
 
@@ -111,8 +111,8 @@ describe('chase - prime - 9337 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('other');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('want');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('want');
   });
 });
 
@@ -134,8 +134,8 @@ describe('chase - prime - 9337 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('other');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('want');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('want');
   });
 });
 
@@ -157,8 +157,8 @@ describe('discover - it - 4217 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('groceries');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('need');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('need');
   });
 });
 
@@ -180,8 +180,8 @@ describe('citi - custom cash - 2983 -> should match as expected', () => {
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
     expect(category).toBe('other');
 
-    const wantOrNeed = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
-    expect(wantOrNeed).toBe('want');
+    const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
+    expect(want_or_need).toBe('want');
   });
 });
 
