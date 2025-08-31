@@ -35,10 +35,21 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const sql = neon(DATABASE_URL || '');
-    const data = await sql`SELECT * FROM expenses ORDER BY date DESC`;
+
+    const { searchParams } = new URL(request.url);
+    const order = searchParams.get('order') || 'DESC';
+
+    let data;
+    if (order === 'ASC') {
+      data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
+    } else if (order === 'DESC') {
+      data = await sql`SELECT * FROM expenses ORDER BY id DESC`;
+    } else {
+      data = await sql`SELECT * FROM expenses ORDER BY id`;
+    }
 
     return NextResponse.json(data);
   } catch (error) {

@@ -26,7 +26,7 @@ const Form: React.FC<FormProps> = (props) => {
     want_or_need: 'want',
     date: data.date,
     id: undefined,
-    notes: undefined
+    notes: ''
   };
 
   const [finalizedData, setFinalizedData] = useState(data);
@@ -87,14 +87,14 @@ const Form: React.FC<FormProps> = (props) => {
       try {
         let response;
         if (!shouldUpdate) {
-          response = await fetch('/api/expenses', {
+          response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(finalizedData)
           });
         } else {
           text = 'successfully updated ᕙ(‾̀◡‾́)ᕗ';
-          response = await fetch('/api/expenses', {
+          response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(finalizedData)

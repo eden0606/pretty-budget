@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import styles from './page.module.scss';
-import { getData } from '@/lib/helpers';
 
 export default async function Home() {
   return (

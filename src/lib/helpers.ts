@@ -1,21 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 import { DATABASE_URL } from './constants';
 
-export async function getData(order: 'ASC' | 'DESC') {
-  const sql = neon(DATABASE_URL || '');
-
-  let data;
-  if (order === 'ASC') {
-    data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
-  } else if (order === 'DESC') {
-    data = await sql`SELECT * FROM expenses ORDER BY id DESC`;
-  } else {
-    data = await sql`SELECT * FROM expenses ORDER BY id`;
-  }
-
-  return data;
-}
-
 export async function getColumnNames() {
   const sql = neon(DATABASE_URL || '');
 
@@ -68,7 +53,7 @@ export const parseMessage = (regexArr: RegExp[] | undefined, message: string) =>
   return { amount, store };
 };
 
-export const formatDate = (date: Date) => {
+export const formatDate = (date: Date | string) => {
   let detectedTimeZone: string | undefined;
   try {
     detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -76,7 +61,9 @@ export const formatDate = (date: Date) => {
     console.warn('Timezone detection failed, falling back to UTC');
   }
 
-  return date.toLocaleDateString('en-CA', {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  return dateObj.toLocaleDateString('en-CA', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

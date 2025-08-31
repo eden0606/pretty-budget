@@ -54,7 +54,7 @@ const Entry: React.FC<EntryProps> = ({ data }) => {
     // TODO: add clause for authenticated users
     // if (isAuthenticated) {
     try {
-      const response = await fetch('/api/expenses', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalizedData)
@@ -74,7 +74,7 @@ const Entry: React.FC<EntryProps> = ({ data }) => {
     // TODO: add clause for authenticated users
     // if (isAuthenticated) {
     try {
-      const response = await fetch('/api/expenses', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
