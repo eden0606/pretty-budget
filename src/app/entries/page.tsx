@@ -5,6 +5,8 @@ import Refresh from '@/components/svgs/Refresh';
 import styles from './page.module.scss';
 import { isAuthenticated } from '@/lib/helpers';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Entries() {
   //   const router = useRouter();
   // TODO: add auth state
