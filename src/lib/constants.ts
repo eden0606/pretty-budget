@@ -34,7 +34,8 @@ export const CARD_NAMES = [
   'chase - sapphire preferred - 3007',
   'chase - prime - 9337',
   'citi - custom cash - 2983',
-  'discover - it - 4217'
+  'discover - it - 4217',
+  'other'
 ];
 
 export const CATEGORY = [
@@ -70,7 +71,12 @@ export const FREQUENT_PURCHASES = {
   parking: 'parking',
   home: 'home items',
   tjmaxx: 'home items',
-  marshalls: 'home items'
+  marshalls: 'home items',
+  doordash: 'doordash',
+  publix: 'groceries',
+  harris: 'groceries',
+  chewy: 'chewy',
+  car: 'gas'
 };
 
 // purchase -> category
@@ -98,7 +104,9 @@ export const FREQUENT_CATEGORIES = {
   vet: 'pets',
   flight: 'activities/travel',
   parking: 'activities/travel',
-  home: 'home items'
+  home: 'home items',
+  doordash: 'dining out',
+  chewy: 'pets'
 };
 
 // category -> want/need

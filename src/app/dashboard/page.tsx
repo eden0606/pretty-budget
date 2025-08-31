@@ -12,41 +12,37 @@ export default async function Entries() {
   // TODO: add auth state
   // if (isAuthenticated) {
   let data: FormData[] = [];
-  try {
-    let response;
-    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?order=DESC`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store'
-    });
+  // try {
+  //   let response;
+  //   response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?order=DESC`, {
+  //     method: 'GET',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     cache: 'no-store'
+  //   });
 
-    data = await response.json();
-  } catch (err) {
-    console.error('API call failed:', err);
-  }
+  //   data = await response.json();
+  // } catch (err) {
+  //   console.error('API call failed:', err);
+  // }
 
   return (
     <main className={styles.page}>
       <div className={styles.header}>
-        <h1>entries</h1>
+        <h1>dashboard</h1>
         {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
         {/* TODO: add refresh functionality + add animation */}
         {/* <Refresh /> */}
         {/* </button> */}
       </div>
-      <div className={styles.entries}>
+      {/* <div className={styles.entries}>
         {data.map((item) => {
-          const hasNotes = !!item?.notes;
           return (
             <div key={item.id} className={styles.entry}>
-              <Entry
-                data={item as FormData}
-                style={hasNotes ? { border: '3px dotted var(--dark-periwinkle)' } : {}}
-              />
+              <Entry data={item as FormData} />
             </div>
           );
         })}
-      </div>
+      </div> */}
     </main>
   );
 }

@@ -21,9 +21,10 @@ import styles from './Entry.module.scss';
 
 interface EntryProps {
   data: FormData;
+  style?: {};
 }
 
-const Entry: React.FC<EntryProps> = ({ data }) => {
+const Entry: React.FC<EntryProps> = ({ data, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [finalizedData, setFinalizedData] = useState(data);
@@ -93,7 +94,7 @@ const Entry: React.FC<EntryProps> = ({ data }) => {
 
   return (
     // TODO: add slide down/smooth animation as you open/close
-    <div className={styles.entry}>
+    <div className={styles.entry} style={style}>
       <button onClick={() => setIsOpen(!isOpen)} className={styles.circleButton}>
         {isOpen ? <CircleMinus /> : <CirclePlus />}
       </button>
