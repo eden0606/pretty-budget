@@ -14,7 +14,7 @@ export default async function Entries() {
   let data: FormData[] = [];
   try {
     let response;
-    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?order=DESC`, {
+    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'

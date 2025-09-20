@@ -1,5 +1,6 @@
+import type { FormData } from '@/types';
 import { neon } from '@neondatabase/serverless';
-import { DATABASE_URL } from './constants';
+import { DATABASE_URL, MONTHS, WEEKDAYS } from './constants';
 
 export async function getColumnNames() {
   const sql = neon(DATABASE_URL || '');
@@ -53,7 +54,7 @@ export const parseMessage = (regexArr: RegExp[] | undefined, message: string) =>
   return { amount, store };
 };
 
-export const formatDate = (date: Date | string) => {
+export const formatISODate = (date: Date | string) => {
   let detectedTimeZone: string | undefined;
   try {
     detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -71,9 +72,25 @@ export const formatDate = (date: Date | string) => {
   });
 };
 
+export const formatFullDate = (date: Date) => {
+  const weekday = date.getDay();
+  const month = date.getMonth();
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${WEEKDAYS[weekday]}, ${MONTHS[month]} ${day}, ${year}`;
+};
+
 export const truncateString = (str: string, maxLen: number) => {
   if (str.length > maxLen) {
     return str.slice(0, maxLen - 3) + '...';
   }
   return str;
+};
+
+export const getTotalCost = (data: FormData[]) => {
+  let total = 0;
+  data.map((data) => (total += data.amount));
+
+  return total;
 };

@@ -2,7 +2,7 @@
 
 import type { FormData } from '@/types';
 import { CARD_NAMES, CATEGORY, FREQUENT_CATEGORIES, WANT_OR_NEED } from '@/lib/constants';
-import { findMatch, formatDate } from '@/lib/helpers';
+import { findMatch, formatISODate } from '@/lib/helpers';
 import { useState } from 'react';
 import Edit from '../svgs/Edit';
 import Copy from '../svgs/Copy';
@@ -146,7 +146,7 @@ const Form: React.FC<FormProps> = (props) => {
             type="text"
             id="date"
             name="date"
-            value={formatDate(finalizedData.date)}
+            value={formatISODate(finalizedData.date)}
             onChange={handleChange}
           />
         </div>

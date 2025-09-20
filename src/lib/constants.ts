@@ -76,7 +76,11 @@ export const FREQUENT_PURCHASES = {
   publix: 'groceries',
   harris: 'groceries',
   chewy: 'chewy',
-  car: 'gas'
+  car: 'gas',
+  crunch: 'gym membership',
+  pet: 'pet',
+  vets: 'vet visit - ',
+  park: 'parking'
 };
 
 // purchase -> category
@@ -106,7 +110,12 @@ export const FREQUENT_CATEGORIES = {
   parking: 'activities/travel',
   home: 'home items',
   doordash: 'dining out',
-  chewy: 'pets'
+  chewy: 'pets',
+  membership: 'subscriptions',
+  pet: 'pets',
+  chomps: 'groceries',
+  'core powers': 'groceries',
+  subscription: 'subscriptions'
 };
 
 // category -> want/need
@@ -127,4 +136,41 @@ export const WANT_OR_NEED = {
   wants: 'want',
   'home items': 'want',
   other: 'want'
+};
+
+export const MONTHS: { [key: string | number]: string } = {
+  Jan: 'january',
+  Feb: 'february',
+  Mar: 'march',
+  Apr: 'april',
+  May: 'may',
+  Jun: 'june',
+  Jul: 'july',
+  Aug: 'august',
+  Sep: 'september',
+  Oct: 'october',
+  Nov: 'november',
+  Dec: 'december',
+  1: 'january',
+  2: 'february',
+  3: 'march',
+  4: 'april',
+  5: 'may',
+  6: 'june',
+  7: 'july',
+  8: 'august',
+  9: 'september',
+  10: 'october',
+  11: 'november',
+  12: 'december'
+};
+
+export const WEEKDAYS: { [key: number]: string } = {
+  1: 'monday',
+  2: 'tuesday',
+  3: 'wednesday',
+  4: 'thursday',
+  5: 'friday',
+  6: 'saturday',
+  7: 'sunday'
 };

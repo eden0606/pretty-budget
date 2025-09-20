@@ -40,15 +40,33 @@ export async function GET(request: NextRequest) {
     const sql = neon(DATABASE_URL || '');
 
     const { searchParams } = new URL(request.url);
+    const query = searchParams.get('query') || 'all';
     const order = searchParams.get('order') || 'DESC';
+    const filter = searchParams.get('filter') || 'none';
+    const month = searchParams.get('month') || '';
+    const year = searchParams.get('year') || '';
 
     let data;
-    if (order === 'ASC') {
-      data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
-    } else if (order === 'DESC') {
-      data = await sql`SELECT * FROM expenses ORDER BY id DESC`;
-    } else {
-      data = await sql`SELECT * FROM expenses ORDER BY id`;
+    switch (query) {
+      case 'all':
+        if (filter === 'none') {
+          if (order === 'ASC') {
+            data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
+          } else if (order === 'DESC') {
+            data = await sql`SELECT * FROM expenses ORDER BY id DESC`;
+          } else {
+            data = await sql`SELECT * FROM expenses ORDER BY id`;
+          }
+        }
+
+        if (filter === 'month') {
+          const match = `${year}-${month.toString().padStart(2, '0')}`;
+          data = await sql`
+          SELECT * FROM expenses 
+          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+        `;
+        }
+        break;
     }
 
     return NextResponse.json(data);

@@ -7,7 +7,7 @@ import CirclePlus from '../svgs/CirclePlus';
 import Edit from '../svgs/Edit';
 import Trash from '../svgs/Trash';
 import Check from '../svgs/Check';
-import { formatDate, truncateString } from '@/lib/helpers';
+import { formatISODate, truncateString } from '@/lib/helpers';
 import { CARD_NAMES, CATEGORY } from '@/lib/constants';
 import CreditCard from '../svgs/CreditCard';
 import ShoppingBasket from '../svgs/ShoppingBasket';
@@ -100,7 +100,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
       </button>
       {!isOpen ? (
         <div className={styles.closed}>
-          <p className={styles.date}>{formatDate(finalizedData.date)}</p>
+          <p className={styles.date}>{formatISODate(finalizedData.date)}</p>
           <div className={styles.divider} />
           <div className={styles.details}>
             <p className={styles.purchase}>{truncateString(finalizedData.purchase, 12)}</p>
@@ -110,7 +110,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
       ) : (
         <div className={styles.open}>
           <div className={styles.bubbles}>
-            <p className={styles.date}>{formatDate(finalizedData.date)}</p>
+            <p className={styles.date}>{formatISODate(finalizedData.date)}</p>
             <div className={styles.divider} />
             <p className={styles.id}>{finalizedData.id}</p>
           </div>
