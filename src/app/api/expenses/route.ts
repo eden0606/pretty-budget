@@ -45,6 +45,7 @@ export async function GET(request: NextRequest) {
     const filter = searchParams.get('filter') || 'none';
     const month = searchParams.get('month') || '';
     const year = searchParams.get('year') || '';
+    const action = searchParams.get('action') || '';
 
     let data;
     switch (query) {
@@ -59,10 +60,17 @@ export async function GET(request: NextRequest) {
           }
         }
 
-        if (filter === 'month') {
+        // TODO: think of a better way to define this query param
+        if (filter === 'month' && action === 'sum_total_amount') {
           const match = `${year}-${month.toString().padStart(2, '0')}`;
           data = await sql`
-          SELECT * FROM expenses 
+          SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses
+          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+          GROUP BY category
+          UNION ALL
+          SELECT 'total' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses
           WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
         `;
         }

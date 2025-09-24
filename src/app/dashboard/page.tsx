@@ -12,15 +12,15 @@ export default async function Entries() {
   // TODO: add auth state
   // if (isAuthenticated) {
   const date = new Date();
-  const month = date.getMonth();
+  const month = date.getMonth() + 1;
   const year = date.getFullYear();
   const fullDate = formatFullDate(date);
-  let data: FormData[] = [];
+  let data: { [key: string]: any }[] = [];
 
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?filter=month&month=${month}&year=${year}`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?filter=month&month=${month}&year=${year}&action=sum_total_amount`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -34,15 +34,27 @@ export default async function Entries() {
   }
 
   console.log('DATA', data);
-
-  const totalMonthlySpend = getTotalCost(data);
+  const totalMonthlySpend = data.find((data) => data.category === 'total')?.total;
 
   return (
     <main className={styles.page}>
       <div className={styles.header}>
         <h1>dashboard</h1>
         <h2>{fullDate}</h2>
-        <h2>total monthly spend: ${totalMonthlySpend}</h2>
+        <h2>total monthly spend:</h2>
+        <h3>${totalMonthlySpend}</h3>
+        <h2>total monthly spend by category</h2>
+        {data.map((data, index) => {
+          if (data.category !== 'total') {
+            return (
+              <div key={`${data.category}-${index}`}>
+                <h3>
+                  {data.category}: ${data.total}
+                </h3>
+              </div>
+            );
+          }
+        })}
         {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
         {/* TODO: add refresh functionality + add animation */}
         {/* <Refresh /> */}

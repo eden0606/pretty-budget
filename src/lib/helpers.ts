@@ -74,7 +74,7 @@ export const formatISODate = (date: Date | string) => {
 
 export const formatFullDate = (date: Date) => {
   const weekday = date.getDay();
-  const month = date.getMonth();
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   const year = date.getFullYear();
 
@@ -92,5 +92,5 @@ export const getTotalCost = (data: FormData[]) => {
   let total = 0;
   data.map((data) => (total += data.amount));
 
-  return total;
+  return Math.round(total * 100) / 100;
 };
