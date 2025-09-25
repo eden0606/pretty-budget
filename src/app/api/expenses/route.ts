@@ -69,9 +69,15 @@ export async function GET(request: NextRequest) {
           WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
           GROUP BY category
           UNION ALL
-          SELECT 'total' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses
+          UNION ALL
+          SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
           FROM expenses
           WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+          UNION ALL
+          SELECT 'daily_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses WHERE date = CURRENT_DATE AT TIME ZONE 'EST'
         `;
         }
         break;

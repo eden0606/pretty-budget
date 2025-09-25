@@ -87,10 +87,3 @@ export const truncateString = (str: string, maxLen: number) => {
   }
   return str;
 };
-
-export const getTotalCost = (data: FormData[]) => {
-  let total = 0;
-  data.map((data) => (total += data.amount));
-
-  return Math.round(total * 100) / 100;
-};

@@ -3,7 +3,7 @@ import { FormData } from '@/types';
 import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
-import { formatFullDate, getTotalCost, isAuthenticated } from '@/lib/helpers';
+import { formatFullDate, isAuthenticated } from '@/lib/helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,18 +34,28 @@ export default async function Entries() {
   }
 
   console.log('DATA', data);
-  const totalMonthlySpend = data.find((data) => data.category === 'total')?.total;
+  const yearlySpend = data.find((data) => data.category === 'yearly_spend')?.total || '0';
+  const monthlySpend = data.find((data) => data.category === 'monthly_spend')?.total || '0';
+  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total || '0';
 
   return (
     <main className={styles.page}>
       <div className={styles.header}>
         <h1>dashboard</h1>
         <h2>{fullDate}</h2>
-        <h2>total monthly spend:</h2>
-        <h3>${totalMonthlySpend}</h3>
+        <h2>daily spend:</h2>
+        <h3>${dailySpend}</h3>
+        <h2>monthly spend:</h2>
+        <h3>${monthlySpend}</h3>
+        <h2>yearly spend:</h2>
+        <h3>${yearlySpend}</h3>
         <h2>total monthly spend by category</h2>
         {data.map((data, index) => {
-          if (data.category !== 'total') {
+          if (
+            data.category !== 'yearly_spend' &&
+            data.category !== 'monthly_spend' &&
+            data.category !== 'daily_spend'
+          ) {
             return (
               <div key={`${data.category}-${index}`}>
                 <h3>
