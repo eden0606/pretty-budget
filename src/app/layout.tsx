@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Karla } from 'next/font/google';
 import './globals.scss';
+import Nav from '@/components/Nav';
 
 // const geistSans = Geist({
 //   variable: '--font-geist-sans',
@@ -28,7 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${karla.variable}`}>{children}</body>
+      <body className={`${karla.variable}`}>
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }
