@@ -12,6 +12,7 @@ export default async function Entries() {
   // TODO: add auth state
   // if (isAuthenticated) {
   const date = new Date();
+  const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   const fullDate = formatFullDate(date);
@@ -20,7 +21,7 @@ export default async function Entries() {
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?filter=month&month=${month}&year=${year}&action=sum_total_amount`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?filter=month&day=${day}&month=${month}&year=${year}&action=sum_total_amount`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },

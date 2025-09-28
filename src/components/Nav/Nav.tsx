@@ -8,17 +8,16 @@ import styles from './Nav.module.scss';
 
 const Nav: React.FC = () => {
   const handleNav = () => {
-    console.log('inside');
     const nav = document.getElementById('nav');
     const links = document.getElementById('nav-links');
 
     if (nav && links) {
       links.classList.toggle(styles.animateOut);
       nav.classList.toggle(styles.open);
-
-      if (!links.classList.contains(styles.animateOut)) {
-        links.classList.toggle(styles.flex);
+      // TODO figure this out
+      if (links.classList.contains(styles.animateOut)) {
         setTimeout(() => {}, 450);
+        links.classList.toggle(styles.flex);
       } else {
         links.classList.toggle(styles.flex);
       }
