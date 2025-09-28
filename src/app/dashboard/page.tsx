@@ -35,22 +35,32 @@ export default async function Entries() {
   }
 
   console.log('DATA', data);
-  const yearlySpend = data.find((data) => data.category === 'yearly_spend')?.total || '0';
-  const monthlySpend = data.find((data) => data.category === 'monthly_spend')?.total || '0';
-  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total || '0';
+  const yearlySpend =
+    data.find((data) => data.category === 'yearly_spend')?.total.toFixed(2) || '0';
+  const monthlySpend =
+    data.find((data) => data.category === 'monthly_spend')?.total.toFixed(2) || '0';
+  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total.toFixed(2) || '0';
 
   return (
     <main className={styles.page}>
-      <div className={styles.header}>
+      <div>
         <h1>dashboard</h1>
         <h2>{fullDate}</h2>
-        <h2>daily spend:</h2>
-        <h3>${dailySpend}</h3>
-        <h2>monthly spend:</h2>
-        <h3>${monthlySpend}</h3>
-        <h2>yearly spend:</h2>
-        <h3>${yearlySpend}</h3>
-        <h2>total monthly spend by category</h2>
+      </div>
+      <div>
+        <h3>daily spend</h3>
+        <p>${dailySpend}</p>
+      </div>
+      <div>
+        <h3>monthly spend</h3>
+        <p>${monthlySpend}</p>
+      </div>
+      <div>
+        <h3>yearly spend</h3>
+        <p>${yearlySpend}</p>
+      </div>
+      <div>
+        <h3>total monthly spend by category</h3>
         {data.map((data, index) => {
           if (
             data.category !== 'yearly_spend' &&
@@ -59,18 +69,19 @@ export default async function Entries() {
           ) {
             return (
               <div key={`${data.category}-${index}`}>
-                <h3>
+                <p>
                   {data.category}: ${data.total}
-                </h3>
+                </p>
               </div>
             );
           }
         })}
-        {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
-        {/* TODO: add refresh functionality + add animation */}
-        {/* <Refresh /> */}
-        {/* </button> */}
       </div>
+
+      {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
+      {/* TODO: add refresh functionality + add animation */}
+      {/* <Refresh /> */}
+      {/* </button> */}
       {/* <div className={styles.entries}>
         {data.map((item) => {
           return (

@@ -64,22 +64,10 @@ export async function GET(request: NextRequest) {
         // TODO: think of a better way to define this query param
         if (filter === 'month' && action === 'sum_total_amount') {
           const match = `${year}-${month.toString().padStart(2, '0')}`;
-          const fullDateMatch = `${year}-${month.toString().padStart(2, '0')}-${day}`;
-          console.log(fullDateMatch);
-          console.log(`          SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-          FROM expenses
-          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
-          GROUP BY category
-          UNION ALL
-          SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-          FROM expenses
-          UNION ALL
-          SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-          FROM expenses
-          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
-          UNION ALL
-          SELECT 'daily_spend' as category, SUM(amount) as total
-          FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'}`);
+          const fullDateMatch = `${year}-${month.toString().padStart(2, '0')}-${day
+            .toString()
+            .padStart(2, '0')}`;
+
           data = await sql`
           SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
           FROM expenses
@@ -94,7 +82,7 @@ export async function GET(request: NextRequest) {
           WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
           UNION ALL
           SELECT 'daily_spend' as category, SUM(amount) as total
-          FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'}
+          FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
           `;
         }
         break;

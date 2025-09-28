@@ -77,7 +77,7 @@ export const formatFullDate = (date: Date) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const year = date.getFullYear();
-
+  console.log(weekday, 'weekday');
   return `${WEEKDAYS[weekday]}, ${MONTHS[month]} ${day}, ${year}`;
 };
 
@@ -86,4 +86,17 @@ export const truncateString = (str: string, maxLen: number) => {
     return str.slice(0, maxLen - 3) + '...';
   }
   return str;
+};
+
+export const generateQueryString = (searchParams: { [key: string]: string }) => {
+  const queryString = Object.entries(searchParams)
+    .map(([key, value]) => {
+      if (Array.isArray(value)) {
+        return value.map((v) => `${key}=${v}`).join('&');
+      }
+      return `${key}=${value}`;
+    })
+    .join('&');
+
+  return queryString ? `?${queryString}` : '';
 };
