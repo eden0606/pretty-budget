@@ -5,10 +5,21 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const sql = neon(DATABASE_URL || '');
-    const { date, purchase, store, category, want_or_need, amount, card, notes } =
+    const { date, purchase, store, category, want_or_need, amount, card, notes, flag } =
       await request.json();
 
-    if (!amount || !purchase || !store || !want_or_need || !category || !card) {
+    console.log('amount', amount);
+
+    if (
+      amount === undefined ||
+      amount === null ||
+      amount < 0 ||
+      !purchase ||
+      !store ||
+      !want_or_need ||
+      !category ||
+      !card
+    ) {
       return NextResponse.json({ error: 'Missing required information.' }, { status: 400 });
     }
 
@@ -16,14 +27,14 @@ export async function POST(request: NextRequest) {
 
     if (date) {
       result = await sql`
-        INSERT INTO expenses (date, purchase, store, category, want_or_need, amount, card, notes)
-        VALUES (${date}, ${purchase}, ${store}, ${category}, ${want_or_need}, ${amount}, ${card}, ${notes})
+        INSERT INTO expenses (date, purchase, store, category, want_or_need, amount, card, notes, flag)
+        VALUES (${date}, ${purchase}, ${store}, ${category}, ${want_or_need}, ${amount}, ${card}, ${notes}, ${flag})
         RETURNING *
       `;
     } else {
       result = await sql`
-        INSERT INTO expenses (purchase, store, category, want_or_need, amount, card, notes)
-        VALUES (${purchase}, ${store}, ${category}, ${want_or_need}, ${amount}, ${card}, ${notes})
+        INSERT INTO expenses (purchase, store, category, want_or_need, amount, card, notes, flag)
+        VALUES (${purchase}, ${store}, ${category}, ${want_or_need}, ${amount}, ${card}, ${notes}, ${flag})
         RETURNING *
       `;
     }
@@ -98,16 +109,26 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const sql = neon(DATABASE_URL || '');
-    const { id, purchase, store, category, want_or_need, amount, card, notes } =
+    const { id, purchase, store, category, want_or_need, amount, card, notes, flag } =
       await request.json();
 
-    if (!amount || !purchase || !store || !want_or_need || !category || !card || !id) {
+    if (
+      amount === undefined ||
+      amount === null ||
+      amount < 0 ||
+      !purchase ||
+      !store ||
+      !want_or_need ||
+      !category ||
+      !card ||
+      !id
+    ) {
       return NextResponse.json({ error: 'Missing required information.' }, { status: 400 });
     }
 
     const result = await sql`
     UPDATE expenses
-    SET purchase = ${purchase}, store = ${store}, category = ${category}, want_or_need = ${want_or_need}, amount = ${amount}, card = ${card}, notes = ${notes}
+    SET purchase = ${purchase}, store = ${store}, category = ${category}, want_or_need = ${want_or_need}, amount = ${amount}, card = ${card}, notes = ${notes}, flag = ${flag}
     WHERE id = ${id}
     RETURNING *
   `;

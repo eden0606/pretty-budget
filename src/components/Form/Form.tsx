@@ -9,6 +9,7 @@ import Copy from '../svgs/Copy';
 import styles from './Form.module.scss';
 import CirclePlus from '../svgs/CirclePlus';
 import CircleMinus from '../svgs/CircleMinus';
+import Flag from '../svgs/Flag';
 
 interface FormProps {
   data: FormData;
@@ -26,7 +27,8 @@ const Form: React.FC<FormProps> = (props) => {
     want_or_need: 'want',
     date: data.date,
     id: undefined,
-    notes: ''
+    notes: '',
+    flag: false
   };
 
   const [finalizedData, setFinalizedData] = useState(data);
@@ -34,6 +36,7 @@ const Form: React.FC<FormProps> = (props) => {
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [hasErrors, setHasErrors] = useState(true);
   const [showNotes, setShowNotes] = useState(false);
+  const [isFlagged, setIsFlagged] = useState(false);
 
   const isSubmitted = submitText.includes('successfully');
 
@@ -44,7 +47,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (id === 'amount') {
       setFinalizedData((prev) => ({
         ...prev,
-        [id]: Number(value) || ''
+        [id]: Number(value)
       }));
     } else if (id === 'purchase') {
       const category = (findMatch(value, FREQUENT_CATEGORIES) || data.category).toString();
@@ -64,6 +67,12 @@ const Form: React.FC<FormProps> = (props) => {
         [id]: value,
         ['want_or_need']: want_or_need
       }));
+    } else if (id === 'flag') {
+      setFinalizedData((prev) => ({
+        ...prev,
+        ['flag']: !isFlagged
+      }));
+      setIsFlagged(!isFlagged);
     } else {
       setFinalizedData((prev) => ({
         ...prev,
@@ -139,6 +148,13 @@ const Form: React.FC<FormProps> = (props) => {
       <h1>new expense entry</h1>
       <h3>✿ ͡◕ ᴗ◕)つ━━✫・*。</h3>
       {/* TODO: add validation, using zod schema ??? */}
+      <button
+        className={`${styles.flag} ${isFlagged && styles.flagged}`}
+        id="flag"
+        onClick={handleChange}
+      >
+        <Flag />
+      </button>
       <form>
         <div className={styles.field}>
           <label htmlFor="date">date</label>

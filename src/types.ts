@@ -8,4 +8,5 @@ export type FormData = {
   date: Date;
   id?: number;
   notes?: string;
+  flag?: boolean;
 };

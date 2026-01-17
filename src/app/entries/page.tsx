@@ -36,13 +36,16 @@ export default async function Entries() {
       </div>
       <div className={styles.entries}>
         {data.map((item) => {
+          const isFlagged = !!item?.flag;
           const hasNotes = !!item?.notes;
+          const borderColor = isFlagged
+            ? 'var(--dark-periwinkle)'
+            : hasNotes
+            ? 'var(--dark-lavender'
+            : 'transparent';
           return (
             <div key={item.id} className={styles.entry}>
-              <Entry
-                data={item as FormData}
-                style={hasNotes ? { border: '3px dotted var(--dark-periwinkle)' } : {}}
-              />
+              <Entry data={item as FormData} style={{ border: `3px dotted ${borderColor}` }} />
             </div>
           );
         })}

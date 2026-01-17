@@ -115,6 +115,10 @@
       fill: white;
     }
   }
+
+  button.flagged {
+    background-color: var(--dark-lavender);
+  }
 }
 
 .border {

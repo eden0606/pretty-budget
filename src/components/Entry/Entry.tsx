@@ -18,6 +18,7 @@ import Heart from '../svgs/Heart';
 import Notes from '../svgs/Notes';
 import { useRouter } from 'next/navigation';
 import styles from './Entry.module.scss';
+import Flag from '../svgs/Flag';
 
 interface EntryProps {
   data: FormData;
@@ -27,6 +28,7 @@ interface EntryProps {
 const Entry: React.FC<EntryProps> = ({ data, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isFlagged, setIsFlagged] = useState(data?.flag ?? false);
   const [finalizedData, setFinalizedData] = useState(data);
 
   const router = useRouter();
@@ -38,8 +40,15 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
     if (id === 'amount') {
       setFinalizedData((prev) => ({
         ...prev,
-        [id]: Number(value) || ''
+        [id]: Number(value)
       }));
+    } else if (id === 'flag') {
+      setFinalizedData((prev) => ({
+        ...prev,
+        [id]: !isFlagged
+      }));
+
+      setIsFlagged(!isFlagged);
     } else {
       setFinalizedData((prev) => ({
         ...prev,
@@ -221,8 +230,15 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
           </div>
           <div className={styles.modifyButtons}>
             <div className={styles.left}>
+              <button
+                className={`${styles.flag} ${isFlagged && styles.flagged}`}
+                id="flag"
+                onClick={handleChange}
+              >
+                <Flag />
+              </button>
               {/* TODO: when edit is selected, remove disable from inputs */}
-              <button className={styles.edit} onClick={() => setIsEditing(true)}>
+              <button className={styles.edit} onClick={() => setIsEditing(!isEditing)}>
                 <Edit />
               </button>
               <button className={styles.delete} onClick={handleDelete}>
