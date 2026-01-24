@@ -4,6 +4,7 @@ import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 import { formatFullDate, isAuthenticated } from '@/lib/helpers';
+import { MONTHS } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +22,7 @@ export default async function Entries() {
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?filter=month&day=${day}&month=${month}&year=${year}&action=sum_total_amount`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?day=${day}&month=${month}&year=${year}&action=sum_total_amount`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -34,48 +35,44 @@ export default async function Entries() {
     console.error('API call failed:', err);
   }
 
-  console.log('DATA', data);
   const yearlySpend =
-    data.find((data) => data.category === 'yearly_spend')?.total.toFixed(2) || '0';
+    data.find((data) => data.category === 'yearly_spend')?.total?.toFixed(2) || '0';
   const monthlySpend =
-    data.find((data) => data.category === 'monthly_spend')?.total.toFixed(2) || '0';
-  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total.toFixed(2) || '0';
+    data.find((data) => data.category === 'monthly_spend')?.total?.toFixed(2) || '0';
+  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total?.toFixed(2) || '0';
 
   return (
     <main className={styles.page}>
       <div>
         <h1>dashboard</h1>
         <h2>{fullDate}</h2>
+        <p className={styles.spend}>${dailySpend}</p>
       </div>
       <div>
-        <h3>daily spend</h3>
-        <p>${dailySpend}</p>
+        <h3>month to date</h3>
+        <p className={styles.spend}>${monthlySpend}</p>
       </div>
       <div>
-        <h3>monthly spend</h3>
-        <p>${monthlySpend}</p>
+        <h3>year to date</h3>
+        <p className={styles.spend}>${yearlySpend}</p>
       </div>
       <div>
-        <h3>yearly spend</h3>
-        <p>${yearlySpend}</p>
-      </div>
-      <div>
-        <h3>total monthly spend by category</h3>
-        {data.map((data, index) => {
-          if (
-            data.category !== 'yearly_spend' &&
-            data.category !== 'monthly_spend' &&
-            data.category !== 'daily_spend'
-          ) {
-            return (
-              <div key={`${data.category}-${index}`}>
-                <p>
+        <h3>{MONTHS[month]} spend by category</h3>
+        <div className={styles.categorySpend}>
+          {data.map((data, index) => {
+            if (
+              data.category !== 'yearly_spend' &&
+              data.category !== 'monthly_spend' &&
+              data.category !== 'daily_spend'
+            ) {
+              return (
+                <p key={`${data.category}-${index}`}>
                   {data.category}: ${data.total}
                 </p>
-              </div>
-            );
-          }
-        })}
+              );
+            }
+          })}
+        </div>
       </div>
 
       {/* <button className={styles.refresh} onClick={() => router.reload()}> */}

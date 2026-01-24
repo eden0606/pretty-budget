@@ -8,8 +8,6 @@ export async function POST(request: NextRequest) {
     const { date, purchase, store, category, want_or_need, amount, card, notes, flag } =
       await request.json();
 
-    console.log('amount', amount);
-
     if (
       amount === undefined ||
       amount === null ||
@@ -62,7 +60,31 @@ export async function GET(request: NextRequest) {
     let data;
     switch (query) {
       case 'all':
-        if (filter === 'none') {
+        // TODO: think of a better way to define this query param
+        if (action === 'sum_total_amount' && filter === 'none') {
+          const match = `${year}-${month.toString().padStart(2, '0')}`;
+          const fullDateMatch = `${year}-${month.toString().padStart(2, '0')}-${day
+            .toString()
+            .padStart(2, '0')}`;
+
+          data = await sql`
+                SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+                FROM expenses
+                WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+                GROUP BY category
+                UNION ALL
+                SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+                FROM expenses
+                WHERE CAST(date AS TEXT) LIKE ${'%' + year + '%'} 
+                UNION ALL
+                SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+                FROM expenses
+                WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+                UNION ALL
+                SELECT 'daily_spend' as category, SUM(amount) as total
+                FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
+                `;
+        } else if (!!action && filter === 'none') {
           if (order === 'ASC') {
             data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
           } else if (order === 'DESC') {
@@ -71,32 +93,6 @@ export async function GET(request: NextRequest) {
             data = await sql`SELECT * FROM expenses ORDER BY id`;
           }
         }
-
-        // TODO: think of a better way to define this query param
-        if (filter === 'month' && action === 'sum_total_amount') {
-          const match = `${year}-${month.toString().padStart(2, '0')}`;
-          const fullDateMatch = `${year}-${month.toString().padStart(2, '0')}-${day
-            .toString()
-            .padStart(2, '0')}`;
-
-          data = await sql`
-          SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-          FROM expenses
-          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
-          GROUP BY category
-          UNION ALL
-          SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-          FROM expenses
-          UNION ALL
-          SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-          FROM expenses
-          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
-          UNION ALL
-          SELECT 'daily_spend' as category, SUM(amount) as total
-          FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
-          `;
-        }
-        break;
     }
 
     return NextResponse.json(data);

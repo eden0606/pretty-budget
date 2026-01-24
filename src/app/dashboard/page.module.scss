@@ -2,7 +2,7 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 
   h1,
   h2,
@@ -31,5 +31,15 @@
 
   p {
     margin: 0.5rem 0 0 0;
+  }
+
+  .spend {
+    text-align: center;
+    font-size: 2rem;
+    margin: 1.5rem 0 0 0;
+  }
+
+  .categorySpend {
+    margin: 1.5rem 0 0 0;
   }
 }
