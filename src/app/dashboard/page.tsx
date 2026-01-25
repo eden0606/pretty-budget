@@ -79,7 +79,7 @@ export default async function Entries() {
               return (
                 <div key={`${data.category}-${index}`} className={styles.category}>
                   {CATEGORY_SVGS[data.category]}
-                  <p>${data.total}</p>
+                  <p>${data.total.toFixed(2)}</p>
                   {/* TODO: potentially add toggle here to show labels? feels too messy outright */}
                   <p>{data.category}</p>
                 </div>

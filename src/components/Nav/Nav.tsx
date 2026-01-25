@@ -7,6 +7,7 @@ import TableList from '../svgs/TableList';
 import styles from './Nav.module.scss';
 import { useSearchParams } from 'next/navigation';
 import { generateQueryString } from '@/lib/helpers';
+import Edit from '../svgs/Edit';
 
 const Nav: React.FC = () => {
   const searchParams = useSearchParams();
@@ -48,7 +49,7 @@ const Nav: React.FC = () => {
 
       <div id="nav-links" className={`${styles.links} ${styles.animateOut}`}>
         <Link href={`/form${queryString}`}>
-          <TableList />
+          <Edit />
         </Link>
         <Link href={`/entries${queryString}`}>
           <Book />

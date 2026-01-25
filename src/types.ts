@@ -5,7 +5,7 @@ export type FormData = {
   amount: number;
   category: string;
   want_or_need: string;
-  date: Date;
+  date: string;
   id?: number;
   notes?: string;
   flag?: boolean;

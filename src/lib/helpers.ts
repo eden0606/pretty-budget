@@ -64,21 +64,44 @@ export const formatISODate = (date: Date | string) => {
 
   const dateObj = typeof date === 'string' ? new Date(date) : date;
 
-  return dateObj.toLocaleDateString('en-CA', {
-    year: 'numeric',
-    month: '2-digit',
+  return dateObj.toLocaleDateString('en-US', {
     day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
     timeZone: detectedTimeZone || 'UTC'
   });
 };
+
+export function formatDateInput(date: string) {
+  // remove all non-digits
+  const digits = date.replace(/\D/g, '');
+
+  // format based on length
+  if (digits.length <= 2) {
+    return digits;
+  } else if (digits.length <= 4) {
+    return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  } else {
+    return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4, 8)}`;
+  }
+}
 
 export const formatFullDate = (date: Date) => {
   const weekday = date.getDay();
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const year = date.getFullYear();
-  
+
   return `${WEEKDAYS[weekday]}, ${MONTHS[month]} ${day}, ${year}`;
+};
+
+export const validateDate = (date: string) => {
+  console.log(new Date(date), 'date testing');
+  if (new Date(date)) {
+    return true;
+  }
+
+  return false;
 };
 
 export const truncateString = (str: string, maxLen: number) => {

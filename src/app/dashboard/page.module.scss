@@ -94,6 +94,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 3rem 1.5rem;
+    background-color: var(--light-lavender);
+    border-radius: 1.5rem;
+    padding: 1.5rem 1rem;
 
     .category {
       text-align: center;
@@ -103,7 +106,7 @@
         width: 3rem;
 
         path {
-          fill: var(--dark-lavender);
+          fill: var(--dark-periwinkle);
         }
       }
 

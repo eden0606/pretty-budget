@@ -2,7 +2,7 @@
 
 import type { FormData } from '@/types';
 import { CARD_NAMES, CATEGORY, FREQUENT_CATEGORIES, WANT_OR_NEED } from '@/lib/constants';
-import { findMatch, formatISODate } from '@/lib/helpers';
+import { findMatch, formatDateInput, formatISODate, validateDate } from '@/lib/helpers';
 import { useState } from 'react';
 import Edit from '../svgs/Edit';
 import Copy from '../svgs/Copy';
@@ -25,13 +25,13 @@ const Form: React.FC<FormProps> = (props) => {
     amount: 0,
     category: 'other',
     want_or_need: 'want',
-    date: data.date,
+    date: formatISODate(data.date),
     id: undefined,
     notes: '',
     flag: false
   };
 
-  const [finalizedData, setFinalizedData] = useState(data);
+  const [finalizedData, setFinalizedData] = useState({ ...data, date: formatISODate(data.date) });
   const [submitText, setSubmitText] = useState('successfully submitted ᕙ(‾̀◡‾́)ᕗ');
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [hasErrors, setHasErrors] = useState(true);
@@ -47,7 +47,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (id === 'amount') {
       setFinalizedData((prev) => ({
         ...prev,
-        [id]: Number(value)
+        [id]: value ?? Number(value)
       }));
     } else if (id === 'purchase') {
       const category = (findMatch(value, FREQUENT_CATEGORIES) || data.category).toString();
@@ -70,16 +70,16 @@ const Form: React.FC<FormProps> = (props) => {
     } else if (id === 'flag') {
       setFinalizedData((prev) => ({
         ...prev,
-        ['flag']: !isFlagged
+        [id]: !isFlagged
       }));
       setIsFlagged(!isFlagged);
+    } else if (id === 'date') {
+      const date = formatDateInput(value);
 
-      // TODO: fix date, we are not able to change the date in the input without Invalid Date showing
-      // } else if (id === 'date') {
-      //   setFinalizedData((prev) => ({
-      //     ...prev,
-      //     ['flag']: !isFlagged
-      //   }));
+      setFinalizedData((prev) => ({
+        ...prev,
+        [id]: date
+      }));
     } else {
       setFinalizedData((prev) => ({
         ...prev,
@@ -169,7 +169,8 @@ const Form: React.FC<FormProps> = (props) => {
             type="text"
             id="date"
             name="date"
-            value={formatISODate(finalizedData.date)}
+            placeholder="mm/dd/yyyy"
+            value={finalizedData.date}
             onChange={handleChange}
           />
         </div>
