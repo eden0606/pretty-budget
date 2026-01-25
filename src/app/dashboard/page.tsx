@@ -4,7 +4,7 @@ import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 import { formatFullDate, isAuthenticated } from '@/lib/helpers';
-import { MONTHS } from '@/lib/constants';
+import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,21 +43,32 @@ export default async function Entries() {
 
   return (
     <main className={styles.page}>
-      <div>
-        <h1>dashboard</h1>
-        <h2>{fullDate}</h2>
-        <p className={styles.spend}>${dailySpend}</p>
+      <h1>dashboard</h1>
+      <div className={styles.spend}>
+        <div>
+          <h2>{fullDate}</h2>
+          <p>${dailySpend}</p>
+        </div>
+        <div>
+          <h3>monthly</h3>
+          <p>${monthlySpend}</p>
+        </div>
+        <div>
+          <h3>yearly</h3>
+          <p>${yearlySpend}</p>
+        </div>
       </div>
+      {/* <p className={styles.border}>.。･:*:･°˖✧◝(◕ヮ◕)◜✧˖°･:*:･。.</p> */}
       <div>
-        <h3>month to date</h3>
-        <p className={styles.spend}>${monthlySpend}</p>
-      </div>
-      <div>
-        <h3>year to date</h3>
-        <p className={styles.spend}>${yearlySpend}</p>
-      </div>
-      <div>
-        <h3>{MONTHS[month]} spend by category</h3>
+        {/* TODO: extract this to its own client component */}
+        <div className={styles.viewSpendInput}>
+          <label htmlFor="displays">view spend . . . </label>
+          <select name="displays" id="displays">
+            <option value="category">by category</option>
+            <option value="vs_last_month">vs. last month</option>
+            <option value="ytd">over the last year</option>
+          </select>
+        </div>
         <div className={styles.categorySpend}>
           {data.map((data, index) => {
             if (
@@ -66,9 +77,12 @@ export default async function Entries() {
               data.category !== 'daily_spend'
             ) {
               return (
-                <p key={`${data.category}-${index}`}>
-                  {data.category}: ${data.total}
-                </p>
+                <div key={`${data.category}-${index}`} className={styles.category}>
+                  {CATEGORY_SVGS[data.category]}
+                  <p>${data.total}</p>
+                  {/* TODO: potentially add toggle here to show labels? feels too messy outright */}
+                  <p>{data.category}</p>
+                </div>
               );
             }
           })}

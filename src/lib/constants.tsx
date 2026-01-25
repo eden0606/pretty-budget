@@ -1,3 +1,20 @@
+import Building from '@/components/svgs/Building';
+import Car from '@/components/svgs/Car';
+import Cat from '@/components/svgs/Cat';
+import CircleQuestionMark from '@/components/svgs/CircleQuestionMark';
+import Gift from '@/components/svgs/Gift';
+import Heart from '@/components/svgs/Heart';
+import KitchenSet from '@/components/svgs/KitchenSet';
+import Lightbulb from '@/components/svgs/Lightbulb';
+import Plane from '@/components/svgs/Plane';
+import Shirt from '@/components/svgs/Shirt';
+import ShoppingBasket from '@/components/svgs/ShoppingBasket';
+import Soap from '@/components/svgs/Soap';
+import Spotify from '@/components/svgs/Spotify';
+import Stethoscope from '@/components/svgs/Stethoscope';
+import Utensils from '@/components/svgs/Utensils';
+import { ReactElement } from 'react';
+
 export const DATABASE_URL =
   process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL : process.env.DEV_DATABASE_URL;
 
@@ -59,6 +76,7 @@ export const CATEGORY = [
 // store -> purchase
 export const FREQUENT_PURCHASES = {
   coffee: 'coffee',
+  coffe: 'coffee',
   'chick-fil-a': 'chick-fil-a',
   chickfila: 'chick-fil-a',
   aldi: 'groceries',
@@ -80,7 +98,12 @@ export const FREQUENT_PURCHASES = {
   crunch: 'gym membership',
   pet: 'pet',
   vets: 'vet visit - ',
-  park: 'parking'
+  park: 'parking',
+  exxon: 'gas',
+  member: 'membership',
+  bojangles: 'dining out',
+  lyft: 'activities/travel',
+  uber: 'activities/travel'
 };
 
 // purchase -> category
@@ -112,6 +135,7 @@ export const FREQUENT_CATEGORIES = {
   doordash: 'dining out',
   chewy: 'pets',
   membership: 'subscriptions',
+  member: 'subscriptions',
   pet: 'pets',
   chomps: 'groceries',
   'core powers': 'groceries',
@@ -173,4 +197,22 @@ export const WEEKDAYS: { [key: number]: string } = {
   5: 'friday',
   6: 'saturday',
   0: 'sunday'
+};
+
+export const CATEGORY_SVGS: { [key: string]: ReactElement<SVGAElement> } = {
+  'activities/travel': <Plane />,
+  car: <Car />,
+  clothes: <Shirt />,
+  'dining out': <Utensils />,
+  gifts: <Gift />,
+  groceries: <ShoppingBasket />,
+  hba: <Soap />,
+  'health/wellness': <Stethoscope />,
+  rent: <Building />,
+  utilities: <Lightbulb />,
+  pets: <Cat />,
+  subscriptions: <Spotify />,
+  wants: <Heart />,
+  'home items': <KitchenSet />,
+  other: <CircleQuestionMark />
 };

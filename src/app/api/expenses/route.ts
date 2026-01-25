@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
                 SELECT 'daily_spend' as category, SUM(amount) as total
                 FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
                 `;
-        } else if (!!action && filter === 'none') {
+        } else if (!action && filter === 'none') {
           if (order === 'ASC') {
             data = await sql`SELECT * FROM expenses ORDER BY id ASC`;
           } else if (order === 'DESC') {

@@ -35,7 +35,7 @@ export default async function Entries() {
         {/* </button> */}
       </div>
       <div className={styles.entries}>
-        {data.map((item) => {
+        {data?.map((item) => {
           const isFlagged = !!item?.flag;
           const hasNotes = !!item?.notes;
           const borderColor = isFlagged

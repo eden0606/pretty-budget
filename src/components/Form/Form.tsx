@@ -73,6 +73,13 @@ const Form: React.FC<FormProps> = (props) => {
         ['flag']: !isFlagged
       }));
       setIsFlagged(!isFlagged);
+
+      // TODO: fix date, we are not able to change the date in the input without Invalid Date showing
+      // } else if (id === 'date') {
+      //   setFinalizedData((prev) => ({
+      //     ...prev,
+      //     ['flag']: !isFlagged
+      //   }));
     } else {
       setFinalizedData((prev) => ({
         ...prev,
@@ -146,7 +153,7 @@ const Form: React.FC<FormProps> = (props) => {
   return (
     <div className={`${styles.form} ${isAuthenticated ? styles.auth : styles.nonauth}`}>
       <h1>new expense entry</h1>
-      <h3>✿ ͡◕ ᴗ◕)つ━━✫・*。</h3>
+      <h3>(✿ ͡◕ ᴗ◕)つ━━✫・*。</h3>
       {/* TODO: add validation, using zod schema ??? */}
       <button
         className={`${styles.flag} ${isFlagged && styles.flagged}`}
