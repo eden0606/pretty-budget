@@ -4,16 +4,7 @@ import './globals.scss';
 import Nav from '@/components/Nav';
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
-
-// const geistSans = Geist({
-//   variable: '--font-geist-sans',
-//   subsets: ['latin']
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: '--font-geist-mono',
-//   subsets: ['latin']
-// });
+import AuthenticatedStatus from '@/components/AuthenticatedStatus';
 
 const karla = Karla({
   variable: '--karla',
@@ -38,6 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body id="theme" data-theme={theme} className={`${karla.variable}`}>
+        <AuthenticatedStatus />
         <Suspense>
           <Nav />
         </Suspense>
