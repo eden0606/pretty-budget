@@ -1,5 +1,5 @@
 import styles from './page.module.scss';
-import { findMatch, isAuthenticated, parseMessage } from '@/lib/helpers';
+import { findMatch, formatISODate, isAuthenticated, parseMessage } from '@/lib/helpers';
 import { CARDS, FREQUENT_CATEGORIES, FREQUENT_PURCHASES, WANT_OR_NEED } from '@/lib/constants';
 import Form from '@/components/Form';
 
@@ -19,7 +19,7 @@ export default async function Page({ searchParams }: PageProps) {
   let amount = 0.0;
   let store = '';
 
-  const date = new Date();
+  const date = formatISODate(new Date());
 
   if (message) {
     card = findMatch(message, CARDS) || {};

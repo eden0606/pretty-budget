@@ -1,11 +1,27 @@
 :root {
-  --dark-periwinkle: #a7abde;
-  --periwinkle: #c8ceee;
+  --cream: #fcfceb;
+  --cream-dark: #ededd4;
+  --primary-900: #0e2009;
+  --primary: #133d05;
+  --primary-100: #e9f4e7;
+  --primary-200: #c0d7bc;
+  --primary-300: #c0d7bc;
+  --primary-400: #95b490;
+  --secondary: #867c63;
+  --secondary-400: #c9c2b5;
+
+  // --dark-periwinkle: #a7abde;
+  // --periwinkle: #c8ceee;
   --dark-lavender: #d8bee5;
   --lavender: #e8daf0;
   --light-lavender: #f3e4f5;
   --light-pink: #fcdceb;
   --dark-pink: #f8a9ce;
+}
+
+body[data-theme='purple'] {
+  --primary: #a7abde;
+  --primary-light: #c8ceee;
 }
 
 html,
@@ -16,6 +32,7 @@ body {
 
 body {
   font-family: var(--karla);
+  background-color: var(--cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -42,4 +59,30 @@ button {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  background-color: var(--primary);
+  font-size: 1rem;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+button:hover {
+  background: var(--primary-300);
+  color: var(--primary);
+}
+
+h1 {
+  background-color: var(--primary);
+  color: var(--cream);
+  padding: 0.75rem 3rem;
+  text-align: center;
+  width: max-content;
+  border-radius: 3rem;
+  margin: 0 auto;
+}
+
+p {
+  color: var(--primary-900);
 }

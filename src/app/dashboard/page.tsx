@@ -8,7 +8,7 @@ import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
-export default async function Entries() {
+export default async function Dashboard() {
   //   const router = useRouter();
   // TODO: add auth state
   // if (isAuthenticated) {
@@ -67,6 +67,7 @@ export default async function Entries() {
             <option value="category">by category</option>
             <option value="vs_last_month">vs. last month</option>
             <option value="ytd">over the last year</option>
+            <option value="wants_vs_needs">wants vs. needs</option>
           </select>
         </div>
         <div className={styles.categorySpend}>

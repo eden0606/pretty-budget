@@ -7,7 +7,7 @@
 .circle {
   width: 55px;
   height: 55px;
-  background-color: var(--dark-pink);
+  background-color: var(--secondary);
   padding: 1.125rem 1rem;
   margin: 1rem 1rem 1rem auto;
   border-radius: 100%;
@@ -30,7 +30,7 @@
     position: absolute;
     height: 3px;
     width: 50%;
-    background: white;
+    background: var(--cream);
     opacity: 1;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -125,7 +125,7 @@
 }
 
 .links {
-  background-color: var(--dark-pink);
+  background-color: var(--secondary);
   padding: 1rem 0.5rem;
   border-radius: 2rem;
   margin-right: 1rem;
@@ -142,7 +142,7 @@
     width: 35px;
 
     path {
-      fill: white;
+      fill: var(--cream);
     }
   }
 }

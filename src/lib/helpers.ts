@@ -1,6 +1,7 @@
 import type { FormData } from '@/types';
 import { neon } from '@neondatabase/serverless';
-import { DATABASE_URL, MONTHS, WEEKDAYS } from './constants';
+import { DATABASE_URL, FREQUENT_CATEGORIES, MONTHS, WANT_OR_NEED, WEEKDAYS } from './constants';
+import { Dispatch, SetStateAction } from 'react';
 
 export async function getColumnNames() {
   const sql = neon(DATABASE_URL || '');
@@ -122,4 +123,57 @@ export const generateQueryString = (searchParams: { [key: string]: string }) => 
     .join('&');
 
   return queryString ? `?${queryString}` : '';
+};
+
+export const handleChange = (form: {
+  e: any;
+  data: FormData;
+  setFinalizedData: Dispatch<SetStateAction<FormData>>;
+}) => {
+  const { e, data, setFinalizedData } = form;
+
+  const id = e.currentTarget.id;
+  let value = e.currentTarget.value;
+
+  if (id === 'amount') {
+    setFinalizedData((prev) => ({
+      ...prev,
+      [id]: value ?? Number(value)
+    }));
+  } else if (id === 'purchase') {
+    const category = (findMatch(value, FREQUENT_CATEGORIES) || data.category).toString();
+    const want_or_need = (findMatch(category, WANT_OR_NEED) || data.want_or_need).toString();
+
+    setFinalizedData((prev) => ({
+      ...prev,
+      [id]: value,
+      ['category']: category,
+      ['want_or_need']: want_or_need
+    }));
+  } else if (id === 'category') {
+    const want_or_need = (findMatch(value, WANT_OR_NEED) || data.want_or_need).toString();
+
+    setFinalizedData((prev) => ({
+      ...prev,
+      [id]: value,
+      ['want_or_need']: want_or_need
+    }));
+  } else if (id === 'flag') {
+    setFinalizedData((prev) => ({
+      ...prev,
+      [id]: !prev.flag
+    }));
+  } else if (id === 'date') {
+    const date = formatDateInput(value);
+
+    setFinalizedData((prev) => ({
+      ...prev,
+      [id]: date
+    }));
+  } else {
+    setFinalizedData((prev) => ({
+      ...prev,
+      [id]: value
+    }));
+  }
 };

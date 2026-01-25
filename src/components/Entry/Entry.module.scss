@@ -1,5 +1,5 @@
 .entry {
-  background-color: var(--light-lavender);
+  background-color: var(--primary-300);
   border-radius: 1.5rem;
   padding: 1rem 1.5rem;
   position: relative;
@@ -16,12 +16,17 @@
   right: 0;
   top: 0;
   padding: 0.75rem;
+  background-color: transparent;
 
   svg {
     height: 2rem;
     width: 2rem;
-    fill: var(--dark-periwinkle);
+    fill: var(--secondary);
   }
+}
+
+.circleButton:hover {
+  background-color: transparent;
 }
 
 .closed {
@@ -30,7 +35,6 @@
 
   .date {
     width: 100px;
-    // padding: 1rem;
   }
 
   .details {
@@ -50,9 +54,9 @@
   .id {
     padding: 0.5rem 1rem;
     border-radius: 4rem;
-    background-color: var(--dark-periwinkle);
+    background-color: var(--primary);
     font-weight: bold;
-    color: white;
+    color: var(--cream);
     width: max-content;
   }
 
@@ -79,7 +83,7 @@
     svg {
       width: 1.5rem;
       height: 1.5rem;
-      fill: var(--dark-lavender);
+      fill: var(--secondary);
     }
   }
 
@@ -91,7 +95,7 @@
 
 .divider {
   width: 2px;
-  background-color: white;
+  background-color: var(--cream);
 }
 
 .modifyButtons {
@@ -106,21 +110,29 @@
   button {
     height: 2.75rem;
     width: 2.75rem;
-    background-color: var(--dark-periwinkle);
+    background-color: var(--primary);
     border-radius: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     svg {
       width: 1.5rem;
       height: 1.5rem;
-      fill: white;
+      fill: var(--cream);
     }
   }
 
   button.flagged {
-    background-color: var(--dark-lavender);
+    background-color: var(--cream);
+
+    svg {
+      fill: var(--primary);
+    }
   }
 }
 
 .border {
-  border: 2px dotted var(--dark-periwinkle);
+  border: 2px dotted var(--primary);
 }

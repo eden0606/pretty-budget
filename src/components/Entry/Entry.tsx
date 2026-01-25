@@ -7,7 +7,7 @@ import CirclePlus from '../svgs/CirclePlus';
 import Edit from '../svgs/Edit';
 import Trash from '../svgs/Trash';
 import Check from '../svgs/Check';
-import { formatISODate, truncateString } from '@/lib/helpers';
+import { formatISODate, handleChange, truncateString } from '@/lib/helpers';
 import { CARD_NAMES, CATEGORY } from '@/lib/constants';
 import CreditCard from '../svgs/CreditCard';
 import ShoppingBasket from '../svgs/ShoppingBasket';
@@ -28,34 +28,11 @@ interface EntryProps {
 const Entry: React.FC<EntryProps> = ({ data, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isFlagged, setIsFlagged] = useState(data?.flag ?? false);
   const [finalizedData, setFinalizedData] = useState(data);
 
   const router = useRouter();
 
-  const handleChange = (e: any) => {
-    const id = e.currentTarget.id;
-    let value = e.currentTarget.value;
-
-    if (id === 'amount') {
-      setFinalizedData((prev) => ({
-        ...prev,
-        [id]: Number(value)
-      }));
-    } else if (id === 'flag') {
-      setFinalizedData((prev) => ({
-        ...prev,
-        [id]: !isFlagged
-      }));
-
-      setIsFlagged(!isFlagged);
-    } else {
-      setFinalizedData((prev) => ({
-        ...prev,
-        [id]: value
-      }));
-    }
-  };
+  const onChange = (e: any) => handleChange({ e, data, setFinalizedData });
 
   const handleSubmit = async (e: any) => {
     setIsEditing(false);
@@ -133,7 +110,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 id="purchase"
                 name="purchase"
                 value={finalizedData.purchase}
-                onChange={handleChange}
+                onChange={onChange}
               />
             </div>
             <div className={styles.field}>
@@ -145,7 +122,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 id="amount"
                 name="amount"
                 value={finalizedData.amount}
-                onChange={handleChange}
+                onChange={onChange}
               />
             </div>
             <div className={styles.field}>
@@ -157,7 +134,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 id="store"
                 name="store"
                 value={finalizedData.store}
-                onChange={handleChange}
+                onChange={onChange}
               />
             </div>
             <div className={styles.field}>
@@ -168,7 +145,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 name="category"
                 id="category"
                 value={finalizedData.category}
-                onChange={handleChange}
+                onChange={onChange}
                 required
               >
                 {CATEGORY.map((category) => {
@@ -188,7 +165,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 name="want_or_need"
                 id="want_or_need"
                 value={finalizedData.want_or_need}
-                onChange={handleChange}
+                onChange={onChange}
                 required
               >
                 <option value="want">want</option>
@@ -199,13 +176,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
               <label htmlFor="card">
                 <CreditCard />
               </label>
-              <select
-                name="card"
-                id="card"
-                value={finalizedData.card}
-                onChange={handleChange}
-                required
-              >
+              <select name="card" id="card" value={finalizedData.card} onChange={onChange} required>
                 {CARD_NAMES.map((card) => {
                   return (
                     <option key={card} value={card}>
@@ -224,16 +195,16 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 id="notes"
                 name="notes"
                 value={finalizedData.notes}
-                onChange={handleChange}
+                onChange={onChange}
               />
             </div>
           </div>
           <div className={styles.modifyButtons}>
             <div className={styles.left}>
               <button
-                className={`${styles.flag} ${isFlagged && styles.flagged}`}
+                className={`${styles.flag} ${finalizedData.flag && styles.flagged}`}
                 id="flag"
-                onClick={handleChange}
+                onClick={onChange}
               >
                 <Flag />
               </button>

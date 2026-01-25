@@ -8,6 +8,7 @@ import styles from './Nav.module.scss';
 import { useSearchParams } from 'next/navigation';
 import { generateQueryString } from '@/lib/helpers';
 import Edit from '../svgs/Edit';
+import Gear from '../svgs/Gear';
 
 const Nav: React.FC = () => {
   const searchParams = useSearchParams();
@@ -56,6 +57,9 @@ const Nav: React.FC = () => {
         </Link>
         <Link href={`/dashboard${queryString}`}>
           <Chart />
+        </Link>
+        <Link href={`/settings${queryString}`}>
+          <Gear />
         </Link>
       </div>
     </div>

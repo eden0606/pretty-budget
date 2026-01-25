@@ -39,9 +39,9 @@ export default async function Entries() {
           const isFlagged = !!item?.flag;
           const hasNotes = !!item?.notes;
           const borderColor = isFlagged
-            ? 'var(--dark-periwinkle)'
+            ? 'var(--primary)'
             : hasNotes
-            ? 'var(--dark-lavender'
+            ? 'var(--secondary)'
             : 'transparent';
           return (
             <div key={item.id} className={styles.entry}>

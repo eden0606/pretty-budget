@@ -1,0 +1,10 @@
+.page {
+  padding: 1.5rem;
+
+  .chips {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem 0 0 0;
+  }
+}
