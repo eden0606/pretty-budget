@@ -179,3 +179,40 @@ export const handleChange = (form: {
     }));
   }
 };
+
+export function getBiltStatementDates(inputDate = new Date(), dueDay = 9) {
+  // Use provided date or default to today
+  const date = inputDate instanceof Date ? inputDate : new Date(inputDate);
+
+  // Get the month and year from the input date
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth();
+
+  // Create the statement end date (due date of the current month)
+  const statementEnd = new Date(currentYear, currentMonth, dueDay);
+
+  // Determine if the input date is after the statement end date
+  // If input date > statement end date, we're in the next statement period
+  if (date > statementEnd) {
+    // Statement ends on the due date of the next month
+    statementEnd.setMonth(statementEnd.getMonth() + 1);
+  }
+
+  // Calculate statement start date (1 month before the end date)
+  const statementStart = new Date(statementEnd);
+  statementStart.setMonth(statementStart.getMonth() - 1);
+  statementStart.setDate(dueDay); // Set to the due day of the previous month
+
+  return {
+    startDate: formatDateYYYYMMDD(statementStart),
+    endDate: formatDateYYYYMMDD(statementEnd)
+  };
+}
+
+// Helper function to format dates as YYYY-MM-DD
+export function formatDateYYYYMMDD(date: Date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}

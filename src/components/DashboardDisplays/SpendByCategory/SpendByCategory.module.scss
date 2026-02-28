@@ -1,0 +1,32 @@
+.display {
+  margin: 1.5rem 0 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3rem 1.5rem;
+  background-color: var(--primary-300);
+  border-radius: 1.5rem;
+  padding: 1.5rem 1rem;
+
+  .category {
+    text-align: center;
+
+    svg {
+      height: 3rem;
+      width: 3rem;
+
+      path {
+        fill: var(--primary);
+      }
+    }
+
+    p {
+      font-size: 1.25rem;
+    }
+
+    p:last-child {
+      font-size: 0.75rem;
+      font-style: italic;
+      margin: 0;
+    }
+  }
+}

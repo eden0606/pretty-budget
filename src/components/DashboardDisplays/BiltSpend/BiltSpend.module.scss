@@ -1,0 +1,14 @@
+.display {
+  margin: 1.5rem 0 0 0;
+  background-color: var(--primary-300);
+  border-radius: 1.5rem;
+  padding: 1.5rem 1rem;
+
+  .statementDates {
+    margin: 0;
+  }
+
+  .total {
+    text-align: center;
+  }
+}

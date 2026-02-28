@@ -3,9 +3,10 @@ import { FormData } from '@/types';
 import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
-import { formatFullDate, isAuthenticated } from '@/lib/helpers';
+import { formatFullDate, getBiltStatementDates, isAuthenticated } from '@/lib/helpers';
 import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 import { ReactEventHandler } from 'react';
+import DashboardDisplay from '@/components/DashboardDisplays/DashboardDisplay/DashboardDisplay';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,10 +21,12 @@ export default async function Dashboard() {
   const fullDate = formatFullDate(date);
   let data: { [key: string]: any }[] = [];
 
+  const { startDate, endDate } = getBiltStatementDates();
+
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?day=${day}&month=${month}&year=${year}&action=sum_total_amount`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?day=${day}&month=${month}&year=${year}&action=sum_total_amount&startDate=${startDate}&endDate=${endDate}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -66,37 +69,7 @@ export default async function Dashboard() {
         </div>
       </div>
       {/* <p className={styles.border}>.。･:*:･°˖✧◝(◕ヮ◕)◜✧˖°･:*:･。.</p> */}
-      <div>
-        {/* TODO: extract this to its own client component */}
-        <div className={styles.viewSpendInput}>
-          <label htmlFor="displays">view spend . . . </label>
-          <select name="displays" id="displays">
-            <option value="category">by category</option>
-            <option value="bilt_spend">on bilt card</option>
-            <option value="vs_last_month">vs. last month</option>
-            <option value="ytd">over the last year</option>
-            <option value="wants_vs_needs">wants vs. needs</option>
-          </select>
-        </div>
-        <div className={styles.categorySpend}>
-          {data.map((data, index) => {
-            if (
-              data.category !== 'yearly_spend' &&
-              data.category !== 'monthly_spend' &&
-              data.category !== 'daily_spend'
-            ) {
-              return (
-                <div key={`${data.category}-${index}`} className={styles.category}>
-                  {CATEGORY_SVGS[data.category]}
-                  <p>${data.total.toFixed(2)}</p>
-                  {/* TODO: potentially add toggle here to show labels? feels too messy outright */}
-                  <p>{data.category}</p>
-                </div>
-              );
-            }
-          })}
-        </div>
-      </div>
+      <DashboardDisplay data={data} />
 
       {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
       {/* TODO: add refresh functionality + add animation */}

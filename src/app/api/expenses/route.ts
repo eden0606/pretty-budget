@@ -56,6 +56,8 @@ export async function GET(request: NextRequest) {
     const month = searchParams.get('month') || '';
     const year = searchParams.get('year') || '';
     const action = searchParams.get('action') || '';
+    const startDate = searchParams.get('startDate') || '';
+    const endDate = searchParams.get('endDate') || '';
 
     let data;
     switch (query) {
@@ -83,6 +85,11 @@ export async function GET(request: NextRequest) {
                 UNION ALL
                 SELECT 'daily_spend' as category, SUM(amount) as total
                 FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
+                UNION ALL
+                SELECT 'bilt_spend' as category, SUM(amount) AS total
+                FROM expenses
+                WHERE card = 'wells fargo - bilt - 4376'
+                AND date BETWEEN ${startDate} AND ${endDate}
                 `;
         } else if (!action && filter === 'none') {
           if (order === 'ASC') {
@@ -93,8 +100,16 @@ export async function GET(request: NextRequest) {
             data = await sql`SELECT * FROM expenses ORDER BY date`;
           }
         }
+        break;
+      // case 'bilt':
+      //   data = await sql`
+      //   SELECT SUM(amount) AS total
+      //   FROM expenses
+      //   WHERE card = 'wells fargo - bilt - 4376'
+      //   AND date BETWEEN ${startDate} AND ${endDate}`;
     }
 
+    console.log('database', NextResponse.json(data));
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error fetching expenses:', error);
