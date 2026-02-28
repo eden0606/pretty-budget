@@ -37,12 +37,7 @@ export default async function Entries() {
       <div className={styles.entries}>
         {data?.map((item) => {
           const isFlagged = !!item?.flag;
-          const hasNotes = !!item?.notes;
-          const borderColor = isFlagged
-            ? 'var(--primary)'
-            : hasNotes
-            ? 'var(--secondary)'
-            : 'transparent';
+          const borderColor = isFlagged ? 'var(--primary)' : 'transparent';
           return (
             <div key={item.id} className={styles.entry}>
               <Entry data={item as FormData} style={{ border: `3px dotted ${borderColor}` }} />

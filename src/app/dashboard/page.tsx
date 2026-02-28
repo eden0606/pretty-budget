@@ -5,6 +5,7 @@ import Refresh from '@/components/svgs/Refresh';
 import styles from './page.module.scss';
 import { formatFullDate, isAuthenticated } from '@/lib/helpers';
 import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
+import { ReactEventHandler } from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,6 +42,12 @@ export default async function Dashboard() {
     data.find((data) => data.category === 'monthly_spend')?.total?.toFixed(2) || '0';
   const dailySpend = data.find((data) => data.category === 'daily_spend')?.total?.toFixed(2) || '0';
 
+  const handleDisplays = (e: ReactEventHandler<HTMLSelectElement>) => {
+    console.log('e', e);
+  };
+
+  console.log('data', data);
+
   return (
     <main className={styles.page}>
       <h1>dashboard</h1>
@@ -65,6 +72,7 @@ export default async function Dashboard() {
           <label htmlFor="displays">view spend . . . </label>
           <select name="displays" id="displays">
             <option value="category">by category</option>
+            <option value="bilt_spend">on bilt card</option>
             <option value="vs_last_month">vs. last month</option>
             <option value="ytd">over the last year</option>
             <option value="wants_vs_needs">wants vs. needs</option>
