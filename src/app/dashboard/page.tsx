@@ -3,7 +3,7 @@ import { FormData } from '@/types';
 import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
-import { formatFullDate, getBiltStatementDates, isAuthenticated } from '@/lib/helpers';
+import { formatFullDate, getStatementDates, isAuthenticated } from '@/lib/helpers';
 import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 import { ReactEventHandler } from 'react';
 import DashboardDisplay from '@/components/DashboardDisplays/DashboardDisplay/DashboardDisplay';
@@ -21,7 +21,7 @@ export default async function Dashboard() {
   const fullDate = formatFullDate(date);
   let data: { [key: string]: any }[] = [];
 
-  const { startDate, endDate } = getBiltStatementDates();
+  const { startDate, endDate } = getStatementDates();
 
   try {
     let response;

@@ -1,6 +1,6 @@
 'use client';
 
-import { getBiltStatementDates } from '@/lib/helpers';
+import { getStatementDates } from '@/lib/helpers';
 import NoData from '../NoData';
 import styles from './BiltSpend.module.scss';
 
@@ -10,7 +10,7 @@ interface BiltSpendProps {
 // TODO: optimize
 const BiltSpend: React.FC<BiltSpendProps> = ({ data }) => {
   console.log('data', data);
-  const { startDate, endDate } = getBiltStatementDates();
+  const { startDate, endDate } = getStatementDates();
   // if (status) {
   //   try {
   //     let response;

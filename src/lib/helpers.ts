@@ -62,7 +62,7 @@ export const formatISODate = (date: Date | string) => {
   try {
     detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   } catch (e) {
-    console.warn('Timezone detection failed, falling back to UTC');
+    console.warn('Timezone detection failed, falling back to EST');
   }
 
   const dateObj = typeof date === 'string' ? new Date(date) : date;
@@ -71,7 +71,7 @@ export const formatISODate = (date: Date | string) => {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
-    timeZone: detectedTimeZone || 'UTC'
+    timeZone: detectedTimeZone || 'EST'
   });
 };
 
@@ -180,7 +180,7 @@ export const handleChange = (form: {
   }
 };
 
-export function getBiltStatementDates(inputDate = new Date(), dueDay = 9) {
+export function getStatementDates(inputDate = new Date(), dueDay = 9) {
   // Use provided date or default to today
   const date = inputDate instanceof Date ? inputDate : new Date(inputDate);
 
