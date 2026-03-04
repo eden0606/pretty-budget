@@ -97,8 +97,6 @@ export async function GET(request: NextRequest) {
             data = await sql`SELECT * FROM expenses ORDER BY date ASC, id DESC`;
           } else if (order === 'DESC') {
             data = await sql`SELECT * FROM expenses ORDER BY date DESC, id DESC`;
-          } else {
-            data = await sql`SELECT * FROM expenses ORDER BY date, id DESC`;
           }
         }
         break;

@@ -47,16 +47,10 @@ export default async function Entries() {
           const date = new Date(item.date);
           const localDate = await getLocalTimezoneDateServer(date);
 
-          while (index < 11) {
-            console.log('entry data', {
-              ...(item as FormData),
-              date: localDate.toISOString().replace('Z', '')
-            });
-          }
           return (
             <div key={item.id} className={styles.entry}>
               <Entry
-                data={{ ...(item as FormData), date: localDate.toISOString().replace('Z', '') }}
+                data={{ ...(item as FormData), date: localDate.toISOString() }}
                 style={{ border: `3px dotted ${borderColor}` }}
               />
             </div>
