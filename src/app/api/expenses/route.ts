@@ -97,10 +97,10 @@ export async function GET(request: NextRequest) {
         } else if (!action && filter === 'none') {
           if (order === 'ASC') {
             data = await sql`
-            SELECT *, date AT TIME ZONE ${timezone} as date FROM expenses ORDER BY date ASC, id DESC`;
+            SELECT *, date AT TIME ZONE ${timezone} as date FROM expenses order by expenses.date ASC, id DESC`;
           } else if (order === 'DESC') {
             data = await sql`
-            SELECT *, date AT TIME ZONE ${timezone} as date FROM expenses ORDER BY date DESC, id DESC`;
+            SELECT *, date AT TIME ZONE ${timezone} as date FROM expenses order by expenses.date DESC, id DESC`;
           }
         }
         break;
