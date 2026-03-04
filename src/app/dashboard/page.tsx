@@ -7,21 +7,31 @@ import { formatFullDate, getStatementDates, isAuthenticated } from '@/lib/helper
 import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 import { ReactEventHandler } from 'react';
 import DashboardDisplay from '@/components/DashboardDisplays/DashboardDisplay/DashboardDisplay';
+import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
+
+export async function getCurrentDateServer() {
+  const header = await headers();
+  const timezone = header.get('x-timezone') || 'America/New_York';
+  const date = new Date(new Date().toLocaleString('en-US', { timeZone: timezone }));
+
+  return date;
+}
 
 export default async function Dashboard() {
   //   const router = useRouter();
   // TODO: add auth state
   // if (isAuthenticated) {
-  const date = new Date();
+
+  const date = await getCurrentDateServer();
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   const fullDate = formatFullDate(date);
-  let data: { [key: string]: any }[] = [];
-
   const { startDate, endDate } = getStatementDates();
+
+  let data: { [key: string]: any }[] = [];
 
   try {
     let response;
@@ -45,12 +55,6 @@ export default async function Dashboard() {
     data.find((data) => data.category === 'monthly_spend')?.total?.toFixed(2) || '0';
   const dailySpend = data.find((data) => data.category === 'daily_spend')?.total?.toFixed(2) || '0';
 
-  const handleDisplays = (e: ReactEventHandler<HTMLSelectElement>) => {
-    console.log('e', e);
-  };
-
-  console.log('data', data);
-
   return (
     <main className={styles.page}>
       <h1>dashboard</h1>
@@ -68,22 +72,12 @@ export default async function Dashboard() {
           <p>${yearlySpend}</p>
         </div>
       </div>
-      {/* <p className={styles.border}>.。･:*:･°˖✧◝(◕ヮ◕)◜✧˖°･:*:･。.</p> */}
       <DashboardDisplay data={data} />
 
       {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
       {/* TODO: add refresh functionality + add animation */}
       {/* <Refresh /> */}
       {/* </button> */}
-      {/* <div className={styles.entries}>
-        {data.map((item) => {
-          return (
-            <div key={item.id} className={styles.entry}>
-              <Entry data={item as FormData} />
-            </div>
-          );
-        })}
-      </div> */}
     </main>
   );
 }

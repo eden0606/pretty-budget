@@ -2,6 +2,7 @@ import type { FormData } from '@/types';
 import { neon } from '@neondatabase/serverless';
 import { DATABASE_URL, FREQUENT_CATEGORIES, MONTHS, WANT_OR_NEED, WEEKDAYS } from './constants';
 import { Dispatch, SetStateAction } from 'react';
+import Cookies from 'js-cookie';
 
 export async function getColumnNames() {
   const sql = neon(DATABASE_URL || '');
@@ -215,4 +216,11 @@ export function formatDateYYYYMMDD(date: Date) {
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
+}
+
+export function getCurrentDateClient() {
+  const timezone = Cookies.get('x-timezone') || 'America/New_York';
+  const date = new Date(new Date().toLocaleString('en-US', { timeZone: timezone }));
+
+  return date;
 }

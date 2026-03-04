@@ -16,6 +16,7 @@ interface FormProps {
   isAuthenticated: boolean;
 }
 
+// TODO: investigate hydration issues
 const Form: React.FC<FormProps> = (props) => {
   const { data, isAuthenticated } = props;
   const resetState = {
