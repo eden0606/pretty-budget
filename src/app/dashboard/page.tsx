@@ -3,7 +3,7 @@ import { FormData } from '@/types';
 import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
-import { formatFullDate, getStatementDates, isAuthenticated } from '@/lib/helpers';
+import { formatFullDate, formatNumber, getStatementDates, isAuthenticated } from '@/lib/helpers';
 import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 import { ReactEventHandler } from 'react';
 import DashboardDisplay from '@/components/DashboardDisplays/DashboardDisplay/DashboardDisplay';
@@ -63,15 +63,15 @@ export default async function Dashboard() {
       <div className={styles.spend}>
         <div>
           <h2>{fullDate}</h2>
-          <p>${dailySpend}</p>
+          <p>${formatNumber(dailySpend)}</p>
         </div>
         <div>
           <h3>monthly</h3>
-          <p>${monthlySpend}</p>
+          <p>${formatNumber(monthlySpend)}</p>
         </div>
         <div>
           <h3>yearly</h3>
-          <p>${yearlySpend}</p>
+          <p>${formatNumber(yearlySpend)}</p>
         </div>
       </div>
       <DashboardDisplay data={data} />

@@ -216,3 +216,11 @@ export function getLocalTimezoneDateClient(targetDate?: Date) {
 
   return new Date(date.toLocaleString('en-US', { timeZone: timezone }));
 }
+
+export function formatNumber(num: number) {
+  if (num === null || num === undefined || isNaN(num)) return '';
+  const [integerPart, decimalPart] = String(num).split('.');
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  return decimalPart !== undefined ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+}

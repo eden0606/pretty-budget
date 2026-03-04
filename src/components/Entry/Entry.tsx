@@ -7,7 +7,7 @@ import CirclePlus from '../svgs/CirclePlus';
 import Edit from '../svgs/Edit';
 import Trash from '../svgs/Trash';
 import Check from '../svgs/Check';
-import { formatISODate, handleChange, truncateString } from '@/lib/helpers';
+import { formatISODate, formatNumber, handleChange, truncateString } from '@/lib/helpers';
 import { CARD_NAMES, CATEGORY } from '@/lib/constants';
 import CreditCard from '../svgs/CreditCard';
 import ShoppingBasket from '../svgs/ShoppingBasket';
@@ -90,7 +90,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
           <div className={styles.divider} />
           <div className={styles.details}>
             <p className={styles.purchase}>{truncateString(finalizedData.purchase, 12)}</p>
-            <p>${finalizedData.amount}</p>
+            <p>${formatNumber(finalizedData.amount)}</p>
           </div>
         </div>
       ) : (

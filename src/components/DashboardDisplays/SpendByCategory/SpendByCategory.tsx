@@ -1,5 +1,6 @@
 'use client';
 
+import { formatNumber } from '@/lib/helpers';
 import NoData from '../NoData';
 import styles from './SpendByCategory.module.scss';
 import { CATEGORY_SVGS } from '@/lib/constants';
@@ -16,7 +17,7 @@ const SpendByCategory: React.FC<SpendByCategoryProps> = ({ data }) => {
           return (
             <div key={`${data.category}-${index}`} className={styles.category}>
               {CATEGORY_SVGS[data.category]}
-              <p>${data.total.toFixed(2)}</p>
+              <p>${formatNumber(data.total.toFixed(2))}</p>
               <p>{data.category}</p>
             </div>
           );
