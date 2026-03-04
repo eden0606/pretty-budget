@@ -38,8 +38,6 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
     setIsEditing(false);
     e.preventDefault();
 
-    console.log('entry data', data);
-
     // TODO: add clause for authenticated users
     // if (isAuthenticated) {
     try {
