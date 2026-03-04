@@ -59,20 +59,12 @@ export const parseMessage = (regexArr: RegExp[] | undefined, message: string) =>
 };
 
 export const formatISODate = (date: Date | string) => {
-  let detectedTimeZone: string | undefined;
-  try {
-    detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  } catch (e) {
-    console.warn('Timezone detection failed, falling back to EST');
-  }
-
   const dateObj = typeof date === 'string' ? new Date(date) : date;
 
   return dateObj.toLocaleDateString('en-US', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric',
-    timeZone: detectedTimeZone || 'EST'
+    year: 'numeric'
   });
 };
 
