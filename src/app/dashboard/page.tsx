@@ -7,7 +7,7 @@ import { formatFullDate, getStatementDates, isAuthenticated } from '@/lib/helper
 import { CATEGORY_SVGS, MONTHS } from '@/lib/constants';
 import { ReactEventHandler } from 'react';
 import DashboardDisplay from '@/components/DashboardDisplays/DashboardDisplay/DashboardDisplay';
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,6 +23,8 @@ export default async function Dashboard() {
   //   const router = useRouter();
   // TODO: add auth state
   // if (isAuthenticated) {
+  const cookieStore = await cookies();
+  const timezone = cookieStore.get('x-timezone') || 'America/New_York';
 
   const date = await getLocalTimezoneDateServer();
   const day = date.getDate();
@@ -36,7 +38,7 @@ export default async function Dashboard() {
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?day=${day}&month=${month}&year=${year}&action=sum_total_amount&startDate=${startDate}&endDate=${endDate}`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?day=${day}&month=${month}&year=${year}&action=sum_total_amount&startDate=${startDate}&endDate=${endDate}&timezone=${timezone}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },

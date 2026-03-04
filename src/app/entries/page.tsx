@@ -5,6 +5,7 @@ import Refresh from '@/components/svgs/Refresh';
 import styles from './page.module.scss';
 import { isAuthenticated } from '@/lib/helpers';
 import { getLocalTimezoneDateServer } from '../dashboard/page';
+import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,9 +14,13 @@ export default async function Entries() {
   // TODO: add auth state
   // if (isAuthenticated) {
   let data: FormData[] = [];
+
+  const cookieStore = await cookies();
+  const timezone = cookieStore.get('x-timezone') || 'America/New_York';
+
   try {
     let response;
-    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
+    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?timezone=${timezone}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'

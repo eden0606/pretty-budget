@@ -58,6 +58,7 @@ export async function GET(request: NextRequest) {
     const action = searchParams.get('action') || '';
     const startDate = searchParams.get('startDate') || '';
     const endDate = searchParams.get('endDate') || '';
+    const timezone = searchParams.get('timezone') || 'America/New_York';
 
     let data;
     switch (query) {
@@ -70,6 +71,7 @@ export async function GET(request: NextRequest) {
             .padStart(2, '0')}`;
 
           data = await sql`
+                SET timezone = ${timezone};
                 SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
                 FROM expenses
                 WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
@@ -93,11 +95,17 @@ export async function GET(request: NextRequest) {
                 `;
         } else if (!action && filter === 'none') {
           if (order === 'ASC') {
-            data = await sql`SELECT * FROM expenses ORDER BY date ASC, id DESC`;
+            data = await sql`
+            SET timezone = ${timezone};
+            SELECT * FROM expenses ORDER BY date ASC, id DESC`;
           } else if (order === 'DESC') {
-            data = await sql`SELECT * FROM expenses ORDER BY date DESC, id DESC`;
+            data = await sql`
+            SET timezone = ${timezone}
+            SELECT * FROM expenses ORDER BY date DESC, id DESC`;
           } else {
-            data = await sql`SELECT * FROM expenses ORDER BY date, id DESC`;
+            data = await sql`
+            SET timezone = ${timezone}
+            SELECT * FROM expenses ORDER BY date, id DESC`;
           }
         }
         break;
