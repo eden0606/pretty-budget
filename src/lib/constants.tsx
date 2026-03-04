@@ -16,7 +16,7 @@ import Utensils from '@/components/svgs/Utensils';
 import { ReactElement } from 'react';
 
 export const DATABASE_URL =
-  process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL : process.env.DATABASE_URL;
+  process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL : process.env.DEV_DATABASE_URL;
 
 export const CARDS = {
   6919: {
