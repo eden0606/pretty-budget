@@ -71,41 +71,39 @@ export async function GET(request: NextRequest) {
             .padStart(2, '0')}`;
 
           data = await sql`
-                SET timezone = ${timezone};
                 SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
                 FROM expenses
-                WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+                WHERE CAST(date AT TIME ZONE ${timezone} AS TEXT) LIKE ${'%' + match + '%'} 
                 GROUP BY category
                 UNION ALL
                 SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
                 FROM expenses
-                WHERE CAST(date AS TEXT) LIKE ${'%' + year + '%'} 
+                WHERE CAST(date AT TIME ZONE ${timezone} AS TEXT) LIKE ${'%' + year + '%'} 
                 UNION ALL
                 SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
                 FROM expenses
-                WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+                WHERE CAST(date AT TIME ZONE ${timezone} AS TEXT) LIKE ${'%' + match + '%'} 
                 UNION ALL
                 SELECT 'daily_spend' as category, SUM(amount) as total
-                FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
+                FROM expenses WHERE CAST(date AT TIME ZONE ${timezone} AS TEXT) LIKE ${
+            '%' + fullDateMatch + '%'
+          } 
                 UNION ALL
                 SELECT 'bilt_spend' as category, SUM(amount) AS total
                 FROM expenses
                 WHERE card = 'wells fargo - bilt - 4376'
-                AND date BETWEEN ${startDate} AND ${endDate}
+                AND date AT TIME ZONE ${timezone} BETWEEN ${startDate} AND ${endDate}
                 `;
         } else if (!action && filter === 'none') {
           if (order === 'ASC') {
             data = await sql`
-            SET timezone = ${timezone};
-            SELECT * FROM expenses ORDER BY date ASC, id DESC`;
+            SELECT *, date AT TIME ZONE ${timezone} FROM expenses ORDER BY date ASC, id DESC`;
           } else if (order === 'DESC') {
             data = await sql`
-            SET timezone = ${timezone}
-            SELECT * FROM expenses ORDER BY date DESC, id DESC`;
+            SELECT *, date AT TIME ZONE ${timezone} FROM expenses ORDER BY date DESC, id DESC`;
           } else {
             data = await sql`
-            SET timezone = ${timezone}
-            SELECT * FROM expenses ORDER BY date, id DESC`;
+            SELECT *, date AT TIME ZONE ${timezone} FROM expenses ORDER BY date, id DESC`;
           }
         }
         break;
