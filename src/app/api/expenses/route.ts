@@ -109,7 +109,6 @@ export async function GET(request: NextRequest) {
       //   AND date BETWEEN ${startDate} AND ${endDate}`;
     }
 
-    console.log('database', NextResponse.json(data));
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error fetching expenses:', error);

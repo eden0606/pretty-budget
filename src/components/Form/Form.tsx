@@ -59,14 +59,20 @@ const Form: React.FC<FormProps> = (props) => {
           response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...finalizedData, date: new Date(finalizedData.date) })
+            body: JSON.stringify({
+              ...finalizedData,
+              date: new Date(finalizedData.date).toISOString()
+            })
           });
         } else {
           text = 'successfully updated ᕙ(‾̀◡‾́)ᕗ';
           response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...finalizedData, date: new Date(finalizedData.date) })
+            body: JSON.stringify({
+              ...finalizedData,
+              date: new Date(finalizedData.date).toISOString()
+            })
           });
         }
 
