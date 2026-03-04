@@ -31,6 +31,8 @@ export default async function Entries() {
     console.error('API call failed:', err);
   }
 
+  console.log('entry data', data);
+
   return (
     <main className={styles.page}>
       <div className={styles.header}>
