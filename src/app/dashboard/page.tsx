@@ -11,12 +11,12 @@ import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
-export async function getCurrentDateServer() {
+export async function getLocalTimezoneDateServer(targetDate?: Date) {
   const header = await headers();
   const timezone = header.get('x-timezone') || 'America/New_York';
-  const date = new Date(new Date().toLocaleString('en-US', { timeZone: timezone }));
+  const date = targetDate || new Date();
 
-  return date;
+  return new Date(date.toLocaleString('en-US', { timeZone: timezone }));
 }
 
 export default async function Dashboard() {
@@ -24,7 +24,7 @@ export default async function Dashboard() {
   // TODO: add auth state
   // if (isAuthenticated) {
 
-  const date = await getCurrentDateServer();
+  const date = await getLocalTimezoneDateServer();
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();

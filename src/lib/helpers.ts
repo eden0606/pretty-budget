@@ -218,9 +218,9 @@ export function formatDateYYYYMMDD(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
-export function getCurrentDateClient() {
+export function getLocalTimezoneDateClient(targetDate?: Date) {
   const timezone = Cookies.get('x-timezone') || 'America/New_York';
-  const date = new Date(new Date().toLocaleString('en-US', { timeZone: timezone }));
+  const date = targetDate || new Date();
 
-  return date;
+  return new Date(date.toLocaleString('en-US', { timeZone: timezone }));
 }

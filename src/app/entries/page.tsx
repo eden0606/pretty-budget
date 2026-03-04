@@ -4,6 +4,7 @@ import Refresh from '@/components/svgs/Refresh';
 // import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 import { isAuthenticated } from '@/lib/helpers';
+import { getLocalTimezoneDateServer } from '../dashboard/page';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,12 +36,18 @@ export default async function Entries() {
         {/* </button> */}
       </div>
       <div className={styles.entries}>
-        {data?.map((item) => {
+        {data?.map(async (item) => {
           const isFlagged = !!item?.flag;
           const borderColor = isFlagged ? 'var(--primary)' : 'transparent';
+          const date = new Date(item.date);
+          const localDate = await getLocalTimezoneDateServer(date);
+
           return (
             <div key={item.id} className={styles.entry}>
-              <Entry data={item as FormData} style={{ border: `3px dotted ${borderColor}` }} />
+              <Entry
+                data={{ ...(item as FormData), date: localDate.toISOString() }}
+                style={{ border: `3px dotted ${borderColor}` }}
+              />
             </div>
           );
         })}

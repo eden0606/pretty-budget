@@ -2,7 +2,7 @@ import styles from './page.module.scss';
 import { findMatch, formatISODate, isAuthenticated, parseMessage } from '@/lib/helpers';
 import { CARDS, FREQUENT_CATEGORIES, FREQUENT_PURCHASES, WANT_OR_NEED } from '@/lib/constants';
 import Form from '@/components/Form';
-import { getCurrentDateServer } from '../dashboard/page';
+import { getLocalTimezoneDateServer } from '../dashboard/page';
 
 interface PageProps {
   searchParams: Promise<any>;
@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
   let amount = 0.0;
   let store = '';
 
-  const serverDate = await getCurrentDateServer();
+  const serverDate = await getLocalTimezoneDateServer();
   const date = formatISODate(serverDate);
 
   if (message) {
