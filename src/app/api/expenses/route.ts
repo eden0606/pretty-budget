@@ -93,11 +93,11 @@ export async function GET(request: NextRequest) {
                 `;
         } else if (!action && filter === 'none') {
           if (order === 'ASC') {
-            data = await sql`SELECT * FROM expenses ORDER BY date ASC`;
+            data = await sql`SELECT * FROM expenses ORDER BY date ASC, id DESC`;
           } else if (order === 'DESC') {
-            data = await sql`SELECT * FROM expenses ORDER BY date DESC`;
+            data = await sql`SELECT * FROM expenses ORDER BY date DESC, id DESC`;
           } else {
-            data = await sql`SELECT * FROM expenses ORDER BY date`;
+            data = await sql`SELECT * FROM expenses ORDER BY date, id DESC`;
           }
         }
         break;
