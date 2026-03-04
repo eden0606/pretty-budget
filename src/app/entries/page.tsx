@@ -31,8 +31,6 @@ export default async function Entries() {
     console.error('API call failed:', err);
   }
 
-  console.log('entry data', data);
-
   return (
     <main className={styles.page}>
       <div className={styles.header}>
@@ -52,7 +50,7 @@ export default async function Entries() {
           return (
             <div key={item.id} className={styles.entry}>
               <Entry
-                data={{ ...(item as FormData), date: localDate.toISOString() }}
+                data={{ ...(item as FormData), date: localDate.toISOString().replace('Z', '') }}
                 style={{ border: `3px dotted ${borderColor}` }}
               />
             </div>

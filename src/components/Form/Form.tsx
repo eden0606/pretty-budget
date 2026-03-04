@@ -61,7 +61,7 @@ const Form: React.FC<FormProps> = (props) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               ...finalizedData,
-              date: new Date(finalizedData.date).toISOString()
+              date: new Date(finalizedData.date).toUTCString()
             })
           });
         } else {
@@ -71,7 +71,7 @@ const Form: React.FC<FormProps> = (props) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               ...finalizedData,
-              date: new Date(finalizedData.date).toISOString()
+              date: new Date(finalizedData.date).toUTCString()
             })
           });
         }

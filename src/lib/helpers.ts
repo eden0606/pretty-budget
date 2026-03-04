@@ -92,7 +92,6 @@ export const formatFullDate = (date: Date) => {
 };
 
 export const validateDate = (date: string) => {
-  console.log(new Date(date), 'date testing');
   if (new Date(date)) {
     return true;
   }
