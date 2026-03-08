@@ -111,6 +111,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 name="purchase"
                 value={finalizedData.purchase}
                 onChange={onChange}
+                disabled={!isEditing}
               />
             </div>
             <div className={styles.field}>
@@ -123,6 +124,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 name="amount"
                 value={finalizedData.amount}
                 onChange={onChange}
+                disabled={!isEditing}
               />
             </div>
             <div className={styles.field}>
@@ -135,6 +137,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 name="store"
                 value={finalizedData.store}
                 onChange={onChange}
+                disabled={!isEditing}
               />
             </div>
             <div className={styles.field}>
@@ -147,6 +150,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 value={finalizedData.category}
                 onChange={onChange}
                 required
+                disabled={!isEditing}
               >
                 {CATEGORY.map((category) => {
                   return (
@@ -167,6 +171,7 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 value={finalizedData.want_or_need}
                 onChange={onChange}
                 required
+                disabled={!isEditing}
               >
                 <option value="want">want</option>
                 <option value="need">need</option>
@@ -176,7 +181,14 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
               <label htmlFor="card">
                 <CreditCard />
               </label>
-              <select name="card" id="card" value={finalizedData.card} onChange={onChange} required>
+              <select
+                name="card"
+                id="card"
+                value={finalizedData.card}
+                onChange={onChange}
+                required
+                disabled={!isEditing}
+              >
                 {CARD_NAMES.map((card) => {
                   return (
                     <option key={card} value={card}>
@@ -196,21 +208,21 @@ const Entry: React.FC<EntryProps> = ({ data, style }) => {
                 name="notes"
                 value={finalizedData.notes}
                 onChange={onChange}
+                disabled={!isEditing}
               />
             </div>
           </div>
           <div className={styles.modifyButtons}>
             <div className={styles.left}>
+              <button className={styles.edit} onClick={() => setIsEditing(!isEditing)}>
+                <Edit />
+              </button>
               <button
                 className={`${styles.flag} ${finalizedData.flag && styles.flagged}`}
                 id="flag"
                 onClick={onChange}
               >
                 <Flag />
-              </button>
-              {/* TODO: when edit is selected, remove disable from inputs */}
-              <button className={styles.edit} onClick={() => setIsEditing(!isEditing)}>
-                <Edit />
               </button>
               <button className={styles.delete} onClick={handleDelete}>
                 <Trash />

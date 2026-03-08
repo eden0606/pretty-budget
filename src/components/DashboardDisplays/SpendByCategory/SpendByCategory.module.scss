@@ -1,11 +1,14 @@
 .display {
-  margin: 1.5rem 0 0 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 3rem 1.5rem;
   background-color: var(--primary-300);
   border-radius: 1.5rem;
   padding: 1.5rem 1rem;
+  margin: 1.5rem 0 0 0;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3rem 1.5rem;
 
   .category {
     text-align: center;

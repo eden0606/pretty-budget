@@ -42,6 +42,10 @@ export const CARDS = {
   discover: {
     name: 'discover - it - 4217',
     regex: [/\$(\d+.\d{1,2}) at (.*) on/]
+  },
+  zelle: {
+    name: 'zelle',
+    regex: [/\$(\d+.\d{1,2}) Zelle\(R\) payment to (.*) is/]
   }
 };
 
@@ -52,6 +56,9 @@ export const CARD_NAMES = [
   'chase - prime - 9337',
   'citi - custom cash - 2983',
   'discover - it - 4217',
+  'zelle',
+  'venmo',
+  'paypal',
   'other'
 ];
 

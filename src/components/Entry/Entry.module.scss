@@ -73,6 +73,14 @@
       width: fit-content;
       width: 100%;
     }
+
+    input:disabled,
+    select:disabled {
+      background-color: var(--secondary-300);
+      opacity: 0.65;
+      color: black;
+      cursor: disabled;
+    }
   }
 
   .field {
