@@ -91,6 +91,7 @@ export async function GET(request: NextRequest) {
                 FROM expenses
                 WHERE card = 'wells fargo - bilt - 4376'
                 AND date BETWEEN ${startDate} AND ${endDate}
+                AND purchase not like '%rent%'
                 `;
         } else if (!action && filter === 'none') {
           if (order === 'ASC') {

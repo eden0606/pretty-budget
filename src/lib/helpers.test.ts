@@ -24,23 +24,23 @@ describe('wf - active cash - 6919 -> should match as expected', () => {
   });
 });
 
-const wfBiltMessage =
-  'Wells Fargo Alert: Credit card ending ...4376 was used at BPS*BILT B RENT PMT for $1540.77. Questions? Call number on card.';
+const biltMessage =
+  'Bilt Blue Card Purchase Alert: $131.36 transaction at Walmart on card ending in 4376';
 
-describe('wf - bilt - 4376 -> should match as expected', () => {
+describe('bilt - 4376 -> should match as expected', () => {
   it('should return expected values', () => {
-    const card: { [key: string]: any } = findMatch(wfBiltMessage, CARDS) || {};
+    const card: { [key: string]: any } = findMatch(biltMessage, CARDS) || {};
     expect(card.name).toBe('wells fargo - bilt - 4376');
 
-    const { amount, store } = parseMessage(card.regex, wfBiltMessage);
-    expect(parseFloat(amount)).toEqual(1540.77);
+    const { amount, store } = parseMessage(card.regex, biltMessage);
+    expect(parseFloat(amount)).toEqual(131.36);
     expect(store).toBe(store.toLowerCase());
 
     const purchase = findMatch(store, FREQUENT_PURCHASES)?.toString() || '';
-    expect(purchase).toBe('rent');
+    expect(purchase).toBe('groceries');
 
     const category = findMatch(purchase, FREQUENT_CATEGORIES)?.toString() || 'other';
-    expect(category).toBe('rent');
+    expect(category).toBe('groceries');
 
     const want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
     expect(want_or_need).toBe('need');

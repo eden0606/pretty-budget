@@ -21,11 +21,15 @@ export const DATABASE_URL =
 export const CARDS = {
   6919: {
     name: 'wells fargo - active cash - 6919',
-    regex: [/used at (.*) for \$(\d+.\d{1,2})/, /\$(\d+.\d{1,2}) purchase at (.*) with/]
+    regex: [
+      /used at (.*) for \$(\d+.\d{1,2})/,
+      /\$(\d+.\d{1,2}) purchase at (.*) with/,
+      /\$(\d+.\d{1,2}) at (.*) with/
+    ]
   },
-  4376: {
+  bilt: {
     name: 'wells fargo - bilt - 4376',
-    regex: [/used at (.*) for \$(\d+.\d{1,2})/, /\$(\d+.\d{1,2}) purchase at (.*) with/]
+    regex: [/\$(\d+.\d{1,2}) transaction at (.*) on/]
   },
   sapphire: {
     name: 'chase - sapphire preferred - 3007',
@@ -109,8 +113,8 @@ export const FREQUENT_PURCHASES = {
   exxon: 'gas',
   member: 'membership',
   bojangles: 'dining out',
-  lyft: 'activities/travel',
-  uber: 'activities/travel'
+  lyft: 'lyft to',
+  uber: 'uber to'
 };
 
 // purchase -> category
