@@ -8,19 +8,22 @@
     text-align: center;
   }
 
-  .refresh {
-    width: 2.5rem;
-    height: 2.5rem;
-    background-color: var(--primary-300);
+  .search {
+    width: 2.25rem;
+    height: 2.25rem;
+    background-color: var(--secondary);
     border-radius: 100%;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2.25rem;
+    left: 0;
 
     svg {
-      width: 1.5rem;
-      height: 1.5rem;
-      fill: var(--dark-periwinkle);
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: var(--cream);
+      position: absolute;
+      top: 0.5rem;
+      right: 0.45rem;
     }
   }
 }

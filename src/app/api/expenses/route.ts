@@ -49,64 +49,68 @@ export async function GET(request: NextRequest) {
     const sql = neon(DATABASE_URL || '');
 
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('query') || 'all';
+    const query = searchParams.get('query') || '';
+    const params = searchParams.get('params') || '';
     const order = searchParams.get('order') || 'DESC';
     const filter = searchParams.get('filter') || 'none';
     const day = searchParams.get('day') || '';
     const month = searchParams.get('month') || '';
     const year = searchParams.get('year') || '';
-    const action = searchParams.get('action') || '';
     const startDate = searchParams.get('startDate') || '';
     const endDate = searchParams.get('endDate') || '';
-    const timezone = searchParams.get('timezone') || 'America/New_York';
+
+    const match = `${year}-${month.toString().padStart(2, '0')}`;
+    const fullDateMatch = `${year}-${month.toString().padStart(2, '0')}-${day
+      .toString()
+      .padStart(2, '0')}`;
 
     let data;
     switch (query) {
-      case 'all':
-        // TODO: think of a better way to define this query param
-        if (action === 'sum_total_amount' && filter === 'none') {
-          const match = `${year}-${month.toString().padStart(2, '0')}`;
-          const fullDateMatch = `${year}-${month.toString().padStart(2, '0')}-${day
-            .toString()
-            .padStart(2, '0')}`;
+      case 'sum_total_amount':
+        data = await sql`
+          SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses
+          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+          GROUP BY category
+          UNION ALL
+          SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses
+          WHERE CAST(date AS TEXT) LIKE ${'%' + year + '%'} 
+          UNION ALL
+          SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+          FROM expenses
+          WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+          UNION ALL
+          SELECT 'daily_spend' as category, SUM(amount) as total
+          FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
+          UNION ALL
+          SELECT 'bilt_spend' as category, SUM(amount) AS total
+          FROM expenses
+          WHERE card = 'wells fargo - bilt - 4376'
+          AND date BETWEEN ${startDate} AND ${endDate}
+          AND purchase not like '%rent%'
+          `;
+        break;
+      case 'predictive_search':
+        const store = params.split(';')?.[0];
 
-          data = await sql`
-                SELECT category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-                FROM expenses
-                WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
-                GROUP BY category
-                UNION ALL
-                SELECT 'yearly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-                FROM expenses
-                WHERE CAST(date AS TEXT) LIKE ${'%' + year + '%'} 
-                UNION ALL
-                SELECT 'monthly_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
-                FROM expenses
-                WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
-                UNION ALL
-                SELECT 'daily_spend' as category, SUM(amount) as total
-                FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
-                UNION ALL
-                SELECT 'bilt_spend' as category, SUM(amount) AS total
-                FROM expenses
-                WHERE card = 'wells fargo - bilt - 4376'
-                AND date BETWEEN ${startDate} AND ${endDate}
-                AND purchase not like '%rent%'
-                `;
-        } else if (!action && filter === 'none') {
-          if (order === 'ASC') {
-            data = await sql`SELECT * FROM expenses ORDER BY date ASC, id DESC`;
-          } else if (order === 'DESC') {
-            data = await sql`SELECT * FROM expenses ORDER BY date DESC, id DESC`;
-          }
+        data =
+          await sql`SELECT purchase, category, want_or_need FROM expenses WHERE store = ${store} limit 1`;
+
+        if (!data?.[0]) {
+          data =
+            await sql`SELECT purchase, category, want_or_need FROM expenses WHERE store like '%${store}%' limit 1`;
+        }
+        data = data?.[0];
+
+        break;
+      default:
+        if (order === 'ASC') {
+          data = await sql`SELECT * FROM expenses ORDER BY date ASC, id DESC`;
+        } else if (order === 'DESC') {
+          data = await sql`SELECT * FROM expenses ORDER BY date DESC, id DESC`;
         }
         break;
-      // case 'bilt':
-      //   data = await sql`
-      //   SELECT SUM(amount) AS total
-      //   FROM expenses
-      //   WHERE card = 'wells fargo - bilt - 4376'
-      //   AND date BETWEEN ${startDate} AND ${endDate}`;
     }
 
     return NextResponse.json(data);

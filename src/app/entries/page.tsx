@@ -1,11 +1,9 @@
 import Entry from '@/components/Entry';
 import { FormData } from '@/types';
-import Refresh from '@/components/svgs/Refresh';
-// import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 import { isAuthenticated } from '@/lib/helpers';
 import { getLocalTimezoneDateServer } from '../dashboard/page';
-import { cookies } from 'next/headers';
+import Search from '@/components/svgs/Search';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,12 +13,9 @@ export default async function Entries() {
   // if (isAuthenticated) {
   let data: FormData[] = [];
 
-  const cookieStore = await cookies();
-  const timezone = cookieStore.get('x-timezone') || 'America/New_York';
-
   try {
     let response;
-    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?timezone=${timezone}`, {
+    response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'
@@ -35,10 +30,9 @@ export default async function Entries() {
     <main className={styles.page}>
       <div className={styles.header}>
         <h1>entries</h1>
-        {/* <button className={styles.refresh} onClick={() => router.reload()}> */}
-        {/* TODO: add refresh functionality + add animation */}
-        {/* <Refresh /> */}
-        {/* </button> */}
+        <button className={styles.search}>
+          <Search />
+        </button>
       </div>
       <div className={styles.entries}>
         {data?.map(async (item, index) => {

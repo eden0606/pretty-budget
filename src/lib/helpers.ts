@@ -59,7 +59,7 @@ export const parseMessage = (regexArr: RegExp[] | undefined, message: string) =>
 };
 
 export const formatISODate = (date: Date | string) => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const dateObj = date ? (typeof date === 'string' ? new Date(date) : date) : new Date();
 
   return dateObj.toLocaleDateString('en-US', {
     timeZone: 'UTC',

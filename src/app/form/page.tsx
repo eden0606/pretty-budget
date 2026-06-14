@@ -35,7 +35,7 @@ export default async function Page({ searchParams }: PageProps) {
     want_or_need = findMatch(category, WANT_OR_NEED)?.toString() || 'want';
   }
 
-  const data = {
+  const defaultData = {
     purchase,
     card: card.name || 'wells fargo - active cash - 6919',
     store,
@@ -45,9 +45,37 @@ export default async function Page({ searchParams }: PageProps) {
     date
   };
 
+  let data;
+  let mergedData = { ...defaultData };
+
+  if (store) {
+    try {
+      let response;
+      response = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?query=predictive_search&params=${store}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store'
+        }
+      );
+
+      data = await response.json();
+    } catch (err) {
+      console.error('API call failed:', err);
+    }
+  }
+
+  mergedData = {
+    ...mergedData,
+    ...(data?.purchase && { purchase: data.purchase }),
+    ...(data?.category && { category: data.category }),
+    ...(data?.want_or_need && { want_or_need: data.want_or_need })
+  };
+
   return (
     <main className={styles.form}>
-      <Form data={data} isAuthenticated={isAuthenticated(key)} />
+      <Form data={mergedData} isAuthenticated={isAuthenticated(key)} />
     </main>
   );
 }
