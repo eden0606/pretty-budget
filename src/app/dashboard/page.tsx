@@ -36,7 +36,7 @@ export default async function Dashboard() {
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?day=${day}&month=${month}&year=${year}&startDate=${startDate}&endDate=${endDate}`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?query=sum_total_amount&day=${day}&month=${month}&year=${year}&startDate=${startDate}&endDate=${endDate}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
