@@ -25,7 +25,7 @@ const BiltSpend: React.FC<BiltSpendProps> = ({ data }) => {
           <div className={styles.math}>
             <p className={styles.requiredSpend}>$400.00</p>
             <p className={styles.minus}>-</p>
-            <p className={styles.total}>${data[0].total.toFixed(2)}</p>
+            <p className={styles.total}>${data[0].total}</p>
             <p className={styles.line}></p>
             <p className={styles.totalRemaining}>${totalRemainingRequiredSpend}</p>
           </div>

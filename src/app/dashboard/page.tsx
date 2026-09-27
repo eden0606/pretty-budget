@@ -36,7 +36,7 @@ export default async function Dashboard() {
   try {
     let response;
     response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?query=sum_total_amount&day=${day}&month=${month}&year=${year}&startDate=${startDate}&endDate=${endDate}`,
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/expenses?query=get_categories&day=${day}&month=${month}&year=${year}&startDate=${startDate}&endDate=${endDate}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -49,11 +49,9 @@ export default async function Dashboard() {
     console.error('API call failed:', err);
   }
 
-  const yearlySpend =
-    data.find((data) => data.category === 'yearly_spend')?.total?.toFixed(2) || '0';
-  const monthlySpend =
-    data.find((data) => data.category === 'monthly_spend')?.total?.toFixed(2) || '0';
-  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total?.toFixed(2) || '0';
+  const yearlySpend = data.find((data) => data.category === 'yearly_spend')?.total || '0';
+  const monthlySpend = data.find((data) => data.category === 'monthly_spend')?.total || '0';
+  const dailySpend = data.find((data) => data.category === 'daily_spend')?.total || '0';
 
   return (
     <main className={styles.page}>

@@ -81,27 +81,80 @@ export async function GET(request: NextRequest) {
           FROM expenses
           WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
           UNION ALL
-          SELECT 'daily_spend' as category, SUM(amount) as total
+          SELECT 'daily_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
           FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
           UNION ALL
-          SELECT 'bilt_spend' as category, SUM(amount) AS total
+          SELECT 'bilt_spend' as category, ROUND(CAST(SUM(amount) AS NUMERIC), 2) AS total
           FROM expenses
           WHERE card = 'wells fargo - bilt - 4376'
           AND date BETWEEN ${startDate} AND ${endDate}
           AND purchase not like '%rent%'
+          AND purchase not like '%Rent%'
           `;
+        break;
+      case 'get_categories':
+        data = await sql`
+            SELECT 
+            category,
+            json_agg(
+                json_build_object(
+                    'purchase', purchase,
+                    'date', CAST(date as TEXT),
+                    'amount', amount,
+                    'store', store,
+                    'want_or_need', want_or_need,
+                    'card', card,
+                    'notes', notes
+                ) ORDER BY date
+            ) as purchases,
+            ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+            FROM expenses 
+            WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+            GROUP BY category
+            UNION ALL
+            SELECT 'yearly_spend' as category, NULL as purchases,  ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+            FROM expenses
+            WHERE CAST(date AS TEXT) LIKE ${'%' + year + '%'} 
+            UNION ALL
+            SELECT 'monthly_spend' as category, NULL as purchases,  ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+            FROM expenses
+            WHERE CAST(date AS TEXT) LIKE ${'%' + match + '%'} 
+            UNION ALL
+            SELECT 'daily_spend' as category, NULL as purchases,  ROUND(CAST(SUM(amount) AS NUMERIC), 2) as total
+            FROM expenses WHERE CAST(date AS TEXT) LIKE ${'%' + fullDateMatch + '%'} 
+            UNION ALL
+            SELECT 'bilt_spend' as category, NULL as purchases,  ROUND(CAST(SUM(amount) AS NUMERIC), 2) AS total
+            FROM expenses
+            WHERE card = 'wells fargo - bilt - 4376'
+            AND date BETWEEN ${startDate} AND ${endDate}
+            AND purchase not like '%rent%'
+            AND purchase not like '%Rent%'
+            `;
         break;
       case 'predictive_search':
         const store = params.split(';')?.[0];
 
         data =
-          await sql`SELECT purchase, category, want_or_need FROM expenses WHERE store = ${store} limit 1`;
+          await sql`SELECT purchase, category, want_or_need FROM expenses WHERE store = ${store} order by date DESC limit 1`;
 
         if (!data?.[0]) {
           data =
-            await sql`SELECT purchase, category, want_or_need FROM expenses WHERE store like '%${store}%' limit 1`;
+            await sql`SELECT purchase, category, want_or_need FROM expenses WHERE store like '%${store}%' order by date DESC limit 1`;
         }
         data = data?.[0];
+
+        break;
+      case 'paginated':
+        const paramArr = params.split(';');
+        const currentPage = paramArr?.[0];
+        const pageSize = paramArr?.[1];
+
+        if (!currentPage && !pageSize) return;
+
+        const offset = parseInt(pageSize) * (parseInt(currentPage) - 1);
+
+        data =
+          await sql`SELECT * FROM expenses ORDER BY date DESC LIMIT ${pageSize} OFFSET ${offset};`;
 
         break;
       default:

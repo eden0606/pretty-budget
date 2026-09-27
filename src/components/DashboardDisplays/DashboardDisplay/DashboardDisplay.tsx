@@ -16,10 +16,11 @@ const DashboardDisplay: React.FC<DashboardDisplayProps> = ({ data }) => {
     (c) =>
       c.category !== 'yearly_spend' &&
       c.category !== 'monthly_spend' &&
-      c.category !== 'daily_spend'
+      c.category !== 'daily_spend' &&
+      c.category !== 'bilt_spend'
   );
 
-  const biltSpendData = data.filter((s) => s.category === 'bilt_spend');
+  const biltSpendData = data.filter((c) => c.category === 'bilt_spend');
 
   const [active, setActive] = useState({ view: 'category', data: spendByCategoryData });
   const [dates, setDates] = useState({
