@@ -12,7 +12,7 @@
   margin: 1rem 1rem 1rem auto;
   border-radius: 100%;
   cursor: pointer;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 .hamburger {
@@ -135,7 +135,7 @@
   align-items: center;
   gap: 1rem;
   animation: slideIn 450ms ease-in-out;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
 
   svg {
     height: 35px;
